@@ -1,0 +1,19 @@
+services:
+  llm-runner:
+    image: ollama/ollama:latest
+    ports: [ "11434:11434" ]
+    environment:
+      - OLLAMA_ORIGINS=*
+      - OLLAMA_KEEP_ALIVE=24h
+    # CPU only; no device requests
+    command: [ "serve" ]
+
+  rag-api:
+    environment:
+      - QDRANT_URL=${QDRANT_URL}
+      - EMBEDDING_MODEL=${EMBEDDING_MODEL}
+
+  asr-api:
+    environment:
+      - ASR_MODEL=${ASR_MODEL}
+      - ASR_DEVICE=cpu

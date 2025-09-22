@@ -1,0 +1,33 @@
+services:
+  llm-runner:
+    image: vllm/vllm-openai:latest
+    ports: [ "8001:8000" ]  # OpenAI-compatible
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    volumes:
+      - "models:/models"
+    command: [
+      "python",
+      "-m", "vllm.entrypoints.openai.api_server",
+      "--model", "${VLLM_MODEL}",
+      "--trust-remote-code"
+    ]
+
+  asr-api:
+    environment:
+      - ASR_MODEL=${ASR_MODEL}
+      - ASR_DEVICE=cuda
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]

@@ -1,0 +1,399 @@
+# AI Stack Tool Manifests
+# This file demonstrates declarative tool definitions using YAML format
+# Tools defined here can be automatically discovered and integrated into the system
+
+version: "1.0"
+schema: "ai-stack-tools"
+
+# Chemistry domain tools
+chemistry_tools:
+  - name: "molecular_weight_calculator"
+    version: "1.0.0"
+    description: "Calculate molecular weight from chemical formula"
+    category: "chemistry"
+    domains: ["chemistry"]
+    tags: ["molecular", "weight", "formula", "calculation"]
+    
+    interface:
+      type: "function"
+      parameters:
+        formula:
+          type: "string"
+          description: "Chemical formula (e.g., H2O, C6H12O6)"
+          required: true
+          pattern: "^[A-Z][a-z]?[0-9]*([A-Z][a-z]?[0-9]*)*$"
+      
+      returns:
+        type: "object"
+        properties:
+          molecular_weight:
+            type: "number"
+            description: "Molecular weight in g/mol"
+          formula:
+            type: "string"
+            description: "Input formula"
+          breakdown:
+            type: "array"
+            description: "Element breakdown with counts"
+    
+    implementation:
+      type: "python"
+      module: "chemistry_tools.molecular_weight"
+      function: "calculate_molecular_weight"
+    
+    examples:
+      - input: {"formula": "H2O"}
+        output: {"molecular_weight": 18.015, "formula": "H2O"}
+      - input: {"formula": "C6H12O6"}
+        output: {"molecular_weight": 180.156, "formula": "C6H12O6"}
+
+  - name: "ph_calculator"
+    version: "1.0.0"
+    description: "Calculate pH from concentration or vice versa"
+    category: "chemistry"
+    domains: ["chemistry"]
+    tags: ["pH", "concentration", "acid", "base", "solution"]
+    
+    interface:
+      type: "function"
+      parameters:
+        calculation_type:
+          type: "string"
+          description: "Type of calculation"
+          enum: ["concentration_to_ph", "ph_to_concentration"]
+          required: true
+        value:
+          type: "number"
+          description: "Input value (concentration in M or pH)"
+          required: true
+          minimum: 0
+        ion_type:
+          type: "string"
+          description: "Ion type for calculation"
+          enum: ["H+", "OH-"]
+          default: "H+"
+      
+      returns:
+        type: "object"
+        properties:
+          result:
+            type: "number"
+            description: "Calculated pH or concentration"
+          input_type:
+            type: "string"
+            description: "Type of input provided"
+          units:
+            type: "string"
+            description: "Units of the result"
+    
+    implementation:
+      type: "python"
+      module: "chemistry_tools.ph_calculator"
+      function: "calculate_ph"
+
+# Mechanical engineering tools
+mechanical_tools:
+  - name: "beam_stress_calculator"
+    version: "1.0.0"
+    description: "Calculate stress and deflection in beams under load"
+    category: "mechanical"
+    domains: ["mechanical", "materials"]
+    tags: ["beam", "stress", "deflection", "load", "structural"]
+    
+    interface:
+      type: "function"
+      parameters:
+        beam_type:
+          type: "string"
+          description: "Type of beam support"
+          enum: ["simply_supported", "cantilever", "fixed_both_ends"]
+          required: true
+        length:
+          type: "number"
+          description: "Beam length"
+          required: true
+          minimum: 0
+          units: "m"
+        load:
+          type: "number"
+          description: "Applied load"
+          required: true
+          units: "N"
+        load_type:
+          type: "string"
+          description: "Type of load application"
+          enum: ["point_center", "point_end", "distributed"]
+          default: "point_center"
+        moment_of_inertia:
+          type: "number"
+          description: "Second moment of area"
+          required: true
+          units: "m^4"
+        elastic_modulus:
+          type: "number"
+          description: "Material elastic modulus"
+          required: true
+          units: "Pa"
+      
+      returns:
+        type: "object"
+        properties:
+          max_stress:
+            type: "number"
+            description: "Maximum stress in beam"
+            units: "Pa"
+          max_deflection:
+            type: "number"
+            description: "Maximum deflection"
+            units: "m"
+          safety_factor:
+            type: "number"
+            description: "Safety factor (if material strength provided)"
+          location_max_stress:
+            type: "string"
+            description: "Location of maximum stress"
+    
+    implementation:
+      type: "python"
+      module: "mechanical_tools.beam_calculator"
+      function: "calculate_beam_stress"
+
+  - name: "unit_converter"
+    version: "1.0.0"
+    description: "Convert between engineering units"
+    category: "engineering"
+    domains: ["mechanical", "chemistry", "materials", "general"]
+    tags: ["units", "conversion", "SI", "imperial", "metric"]
+    
+    interface:
+      type: "function"
+      parameters:
+        value:
+          type: "number"
+          description: "Value to convert"
+          required: true
+        from_unit:
+          type: "string"
+          description: "Source unit"
+          required: true
+        to_unit:
+          type: "string"
+          description: "Target unit"
+          required: true
+        unit_type:
+          type: "string"
+          description: "Type of unit (optional, for validation)"
+          enum: ["length", "mass", "time", "temperature", "pressure", "energy", "force", "volume"]
+      
+      returns:
+        type: "object"
+        properties:
+          converted_value:
+            type: "number"
+            description: "Converted value"
+          from_unit:
+            type: "string"
+            description: "Original unit"
+          to_unit:
+            type: "string"
+            description: "Target unit"
+          conversion_factor:
+            type: "number"
+            description: "Conversion factor used"
+          unit_type:
+            type: "string"
+            description: "Detected or specified unit type"
+    
+    implementation:
+      type: "plugin"
+      plugin_name: "unit_converter"
+      function: "convert_units"
+
+# Materials science tools
+materials_tools:
+  - name: "material_property_lookup"
+    version: "1.0.0"
+    description: "Look up material properties from database"
+    category: "materials"
+    domains: ["materials", "mechanical"]
+    tags: ["materials", "properties", "database", "lookup"]
+    
+    interface:
+      type: "function"
+      parameters:
+        material:
+          type: "string"
+          description: "Material name or identifier"
+          required: true
+        properties:
+          type: "array"
+          description: "List of properties to retrieve"
+          items:
+            type: "string"
+            enum: ["density", "elastic_modulus", "yield_strength", "ultimate_strength", 
+                   "hardness", "thermal_conductivity", "melting_point", "specific_heat"]
+          default: ["density", "elastic_modulus", "yield_strength"]
+        temperature:
+          type: "number"
+          description: "Temperature for property values"
+          units: "K"
+          default: 293.15
+      
+      returns:
+        type: "object"
+        properties:
+          material:
+            type: "string"
+            description: "Material identifier"
+          temperature:
+            type: "number"
+            description: "Temperature of property values"
+            units: "K"
+          properties:
+            type: "object"
+            description: "Material properties with values and units"
+    
+    implementation:
+      type: "database"
+      connection: "materials_db"
+      table: "material_properties"
+      query_template: "SELECT {properties} FROM materials WHERE name ILIKE %{material}%"
+
+# General utility tools
+utility_tools:
+  - name: "file_processor"
+    version: "1.0.0"
+    description: "Process and analyze text/data files"
+    category: "utility"
+    domains: ["general"]
+    tags: ["file", "processing", "analysis", "text", "data"]
+    
+    interface:
+      type: "function"
+      parameters:
+        file_path:
+          type: "string"
+          description: "Path to file to process"
+          required: true
+        operation:
+          type: "string"
+          description: "Type of processing to perform"
+          enum: ["count_lines", "extract_numbers", "find_patterns", "summarize", "validate_format"]
+          required: true
+        pattern:
+          type: "string"
+          description: "Pattern to search for (if applicable)"
+        max_size:
+          type: "integer"
+          description: "Maximum file size to process (bytes)"
+          default: 10485760  # 10MB
+      
+      returns:
+        type: "object"
+        properties:
+          operation:
+            type: "string"
+            description: "Operation performed"
+          file_path:
+            type: "string"
+            description: "Path of processed file"
+          result:
+            type: "object"
+            description: "Processing results"
+          file_info:
+            type: "object"
+            description: "File metadata"
+    
+    implementation:
+      type: "python"
+      module: "utility_tools.file_processor"
+      function: "process_file"
+    
+    security:
+      sandbox: true
+      allowed_paths: ["/tmp/", "/data/uploads/"]
+      max_execution_time: 30
+
+# External CLI tools
+cli_tools:
+  - name: "system_info"
+    version: "1.0.0"
+    description: "Get system information using CLI commands"
+    category: "system"
+    domains: ["general"]
+    tags: ["system", "info", "cli", "monitoring"]
+    
+    interface:
+      type: "cli"
+      command_template: "{command}"
+      allowed_commands:
+        - command: "df -h"
+          description: "Check disk usage"
+          timeout: 10
+        - command: "free -h"
+          description: "Check memory usage"
+          timeout: 5
+        - command: "uptime"
+          description: "Check system uptime"
+          timeout: 5
+      
+      parameters:
+        info_type:
+          type: "string"
+          description: "Type of system information"
+          enum: ["disk", "memory", "uptime"]
+          required: true
+      
+      returns:
+        type: "object"
+        properties:
+          command:
+            type: "string"
+            description: "Command executed"
+          output:
+            type: "string"
+            description: "Command output"
+          parsed_data:
+            type: "object"
+            description: "Structured data from output"
+    
+    implementation:
+      type: "cli_wrapper"
+      security:
+        whitelist_only: true
+        max_execution_time: 30
+
+# Configuration for tool discovery
+discovery:
+  scan_directories:
+    - "services/plugins/"
+    - "tools/custom/"
+  
+  file_patterns:
+    python: "*.py"
+    yaml: "*.yaml"
+    json: "*.json"
+  
+  auto_load: true
+  cache_duration: 3600  # 1 hour
+  
+  validation:
+    required_fields: ["name", "version", "description", "interface"]
+    max_tools_per_file: 50
+    
+security:
+  default_timeout: 30
+  max_memory: "256MB"
+  sandbox_mode: true
+  allowed_imports:
+    - "math"
+    - "json"
+    - "re"
+    - "datetime"
+  
+  restricted_operations:
+    - "file_system_write"
+    - "network_access"
+    - "subprocess"
+    - "eval"
+    - "exec"

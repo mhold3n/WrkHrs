@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Stack Monitoring Dashboard</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            margin-bottom: 0.5rem;
+        }
+
+        .header .subtitle {
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-left: 4px solid #667eea;
+        }
+
+        .card h2 {
+            margin-bottom: 1rem;
+            color: #333;
+            font-size: 1.2rem;
+        }
+
+        .service-status {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .service-status:last-child {
+            border-bottom: none;
+        }
+
+        .service-name {
+            font-weight: 500;
+        }
+
+        .status-indicator {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .status-healthy {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .status-warning {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .status-error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .status-unknown {
+            background-color: #e2e3e5;
+            color: #495057;
+        }
+
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+        }
+
+        .metric-label {
+            color: #666;
+        }
+
+        .metric-value {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .logs-container {
+            background: #1e1e1e;
+            color: #f8f8f2;
+            border-radius: 4px;
+            padding: 1rem;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+        }
+
+        .log-entry {
+            margin-bottom: 0.5rem;
+            padding: 0.25rem;
+            border-radius: 2px;
+        }
+
+        .log-info {
+            background-color: rgba(33, 150, 243, 0.1);
+        }
+
+        .log-warning {
+            background-color: rgba(255, 193, 7, 0.1);
+        }
+
+        .log-error {
+            background-color: rgba(244, 67, 54, 0.1);
+        }
+
+        .refresh-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .refresh-btn:hover {
+            background: #5a6fd8;
+        }
+
+        .timestamp {
+            font-size: 0.7rem;
+            color: #888;
+        }
+
+        .auth-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .auth-stat {
+            text-align: center;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+
+        .auth-stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .auth-stat-label {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>AI Stack Monitoring Dashboard</h1>
+        <div class="subtitle">Real-time monitoring and health status</div>
+        <div class="timestamp" id="lastUpdate">Last updated: Loading...</div>
+    </div>
+
+    <div class="container">
+        <button class="refresh-btn" onclick="refreshDashboard()">🔄 Refresh Dashboard</button>
+
+        <div class="grid">
+            <!-- System Overview -->
+            <div class="card">
+                <h2>🏥 System Health</h2>
+                <div id="systemHealth">
+                    <div class="service-status">
+                        <span class="service-name">Gateway API</span>
+                        <span class="status-indicator status-unknown" id="gateway-status">Checking...</span>
+                    </div>
+                    <div class="service-status">
+                        <span class="service-name">Orchestrator</span>
+                        <span class="status-indicator status-unknown" id="orchestrator-status">Checking...</span>
+                    </div>
+                    <div class="service-status">
+                        <span class="service-name">RAG Service</span>
+                        <span class="status-indicator status-unknown" id="rag-status">Checking...</span>
+                    </div>
+                    <div class="service-status">
+                        <span class="service-name">Tool Registry</span>
+                        <span class="status-indicator status-unknown" id="tools-status">Checking...</span>
+                    </div>
+                    <div class="service-status">
+                        <span class="service-name">MCP Service</span>
+                        <span class="status-indicator status-unknown" id="mcp-status">Checking...</span>
+                    </div>
+                    <div class="service-status">
+                        <span class="service-name">ASR Service</span>
+                        <span class="status-indicator status-unknown" id="asr-status">Checking...</span>
+                    </div>
+                    <div class="service-status">
+                        <span class="service-name">Qdrant Database</span>
+                        <span class="status-indicator status-unknown" id="qdrant-status">Checking...</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Authentication Metrics -->
+            <div class="card">
+                <h2>🔐 Authentication Metrics</h2>
+                <div class="auth-stats">
+                    <div class="auth-stat">
+                        <div class="auth-stat-number" id="authSuccessCount">0</div>
+                        <div class="auth-stat-label">Successful Logins</div>
+                    </div>
+                    <div class="auth-stat">
+                        <div class="auth-stat-number" id="authFailureCount">0</div>
+                        <div class="auth-stat-label">Failed Attempts</div>
+                    </div>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Authentication Enabled:</span>
+                    <span class="metric-value" id="authEnabled">Unknown</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Rate Limiting:</span>
+                    <span class="metric-value" id="rateLimiting">Active</span>
+                </div>
+            </div>
+
+            <!-- Performance Metrics -->
+            <div class="card">
+                <h2>📊 Performance Metrics</h2>
+                <div class="metric">
+                    <span class="metric-label">Average Response Time:</span>
+                    <span class="metric-value" id="avgResponseTime">Loading...</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Total Requests (24h):</span>
+                    <span class="metric-value" id="totalRequests">Loading...</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Error Rate:</span>
+                    <span class="metric-value" id="errorRate">Loading...</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Active Workflows:</span>
+                    <span class="metric-value" id="activeWorkflows">Loading...</span>
+                </div>
+            </div>
+
+            <!-- Resource Usage -->
+            <div class="card">
+                <h2>💻 Resource Usage</h2>
+                <div class="metric">
+                    <span class="metric-label">Memory Usage:</span>
+                    <span class="metric-value" id="memoryUsage">Loading...</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">CPU Usage:</span>
+                    <span class="metric-value" id="cpuUsage">Loading...</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Disk Usage:</span>
+                    <span class="metric-value" id="diskUsage">Loading...</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Network I/O:</span>
+                    <span class="metric-value" id="networkIO">Loading...</span>
+                </div>
+            </div>
+
+            <!-- Recent Logs -->
+            <div class="card" style="grid-column: 1 / -1;">
+                <h2>📋 Recent System Logs</h2>
+                <div class="logs-container" id="recentLogs">
+                    <div class="log-entry">Loading recent logs...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuration
+        const CONFIG = {
+            services: {
+                gateway: 'http://localhost:8080',
+                orchestrator: 'http://localhost:8081', 
+                rag: 'http://localhost:8082',
+                qdrant: 'http://localhost:6333',
+                asr: 'http://localhost:8084',
+                mcp: 'http://localhost:8085',
+                tools: 'http://localhost:8086'
+            },
+            refreshInterval: 30000, // 30 seconds
+            logLimit: 50
+        };
+
+        // Global state
+        let refreshTimer;
+        let authStats = { success: 0, failure: 0 };
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            refreshDashboard();
+            startAutoRefresh();
+        });
+
+        function startAutoRefresh() {
+            refreshTimer = setInterval(refreshDashboard, CONFIG.refreshInterval);
+        }
+
+        function stopAutoRefresh() {
+            if (refreshTimer) {
+                clearInterval(refreshTimer);
+            }
+        }
+
+        async function refreshDashboard() {
+            console.log('Refreshing dashboard...');
+            document.getElementById('lastUpdate').textContent = 
+                `Last updated: ${new Date().toLocaleString()}`;
+
+            // Check all service health
+            await Promise.all([
+                checkServiceHealth(),
+                loadAuthenticationMetrics(),
+                loadPerformanceMetrics(), 
+                loadResourceMetrics(),
+                loadRecentLogs()
+            ]);
+        }
+
+        async function checkServiceHealth() {
+            const services = ['gateway', 'orchestrator', 'rag', 'qdrant', 'asr', 'mcp', 'tools'];
+            
+            for (const service of services) {
+                try {
+                    const url = CONFIG.services[service];
+                    const healthEndpoint = service === 'qdrant' ? '/ready' : '/health';
+                    
+                    const response = await fetch(`${url}${healthEndpoint}`, {
+                        method: 'GET',
+                        timeout: 5000
+                    });
+                    
+                    const statusElement = document.getElementById(`${service}-status`);
+                    
+                    if (response.ok) {
+                        statusElement.textContent = 'Healthy';
+                        statusElement.className = 'status-indicator status-healthy';
+                    } else {
+                        statusElement.textContent = 'Warning';
+                        statusElement.className = 'status-indicator status-warning';
+                    }
+                } catch (error) {
+                    console.log(`Service ${service} health check failed:`, error);
+                    const statusElement = document.getElementById(`${service}-status`);
+                    statusElement.textContent = 'Error';
+                    statusElement.className = 'status-indicator status-error';
+                }
+            }
+        }
+
+        async function loadAuthenticationMetrics() {
+            try {
+                // Mock data - in production, these would come from actual metrics
+                authStats.success += Math.floor(Math.random() * 5);
+                authStats.failure += Math.floor(Math.random() * 2);
+                
+                document.getElementById('authSuccessCount').textContent = authStats.success;
+                document.getElementById('authFailureCount').textContent = authStats.failure;
+                document.getElementById('authEnabled').textContent = 'Yes';
+                document.getElementById('rateLimiting').textContent = '60 req/min';
+            } catch (error) {
+                console.log('Failed to load auth metrics:', error);
+            }
+        }
+
+        async function loadPerformanceMetrics() {
+            try {
+                // Mock data - in production, these would come from actual metrics
+                document.getElementById('avgResponseTime').textContent = 
+                    `${(Math.random() * 500 + 100).toFixed(0)}ms`;
+                document.getElementById('totalRequests').textContent = 
+                    `${(Math.random() * 10000 + 5000).toFixed(0)}`;
+                document.getElementById('errorRate').textContent = 
+                    `${(Math.random() * 2).toFixed(2)}%`;
+                document.getElementById('activeWorkflows').textContent = 
+                    `${Math.floor(Math.random() * 20 + 5)}`;
+            } catch (error) {
+                console.log('Failed to load performance metrics:', error);
+            }
+        }
+
+        async function loadResourceMetrics() {
+            try {
+                // Mock data - in production, these would come from system metrics
+                document.getElementById('memoryUsage').textContent = 
+                    `${(Math.random() * 30 + 40).toFixed(1)}%`;
+                document.getElementById('cpuUsage').textContent = 
+                    `${(Math.random() * 20 + 10).toFixed(1)}%`;
+                document.getElementById('diskUsage').textContent = 
+                    `${(Math.random() * 40 + 30).toFixed(1)}%`;
+                document.getElementById('networkIO').textContent = 
+                    `${(Math.random() * 100 + 50).toFixed(0)} MB/s`;
+            } catch (error) {
+                console.log('Failed to load resource metrics:', error);
+            }
+        }
+
+        async function loadRecentLogs() {
+            try {
+                const logsContainer = document.getElementById('recentLogs');
+                
+                // Mock log entries - in production, these would come from actual log aggregation
+                const mockLogs = [
+                    { level: 'info', message: 'API key authentication successful', timestamp: new Date() },
+                    { level: 'info', message: 'RAG search completed successfully', timestamp: new Date(Date.now() - 30000) },
+                    { level: 'warning', message: 'High memory usage detected', timestamp: new Date(Date.now() - 60000) },
+                    { level: 'info', message: 'Plugin calculator loaded', timestamp: new Date(Date.now() - 90000) },
+                    { level: 'error', message: 'Database connection timeout', timestamp: new Date(Date.now() - 120000) }
+                ];
+                
+                logsContainer.innerHTML = mockLogs.map(log => 
+                    `<div class="log-entry log-${log.level}">
+                        [${log.timestamp.toLocaleTimeString()}] ${log.level.toUpperCase()}: ${log.message}
+                    </div>`
+                ).join('');
+                
+                // Auto-scroll to bottom
+                logsContainer.scrollTop = logsContainer.scrollHeight;
+            } catch (error) {
+                console.log('Failed to load logs:', error);
+            }
+        }
+
+        // Utility functions
+        function formatBytes(bytes) {
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            if (bytes === 0) return '0 Bytes';
+            const i = Math.floor(Math.log(bytes) / Math.log(1024));
+            return Math.round(bytes / Math.pow(1024, i) * 100) / 100 + ' ' + sizes[i];
+        }
+
+        function formatUptime(seconds) {
+            const days = Math.floor(seconds / 86400);
+            const hours = Math.floor((seconds % 86400) / 3600);
+            const minutes = Math.floor((seconds % 3600) / 60);
+            
+            if (days > 0) return `${days}d ${hours}h ${minutes}m`;
+            if (hours > 0) return `${hours}h ${minutes}m`;
+            return `${minutes}m`;
+        }
+
+        // Export functions for manual control
+        window.refreshDashboard = refreshDashboard;
+        window.startAutoRefresh = startAutoRefresh;
+        window.stopAutoRefresh = stopAutoRefresh;
+    </script>
+</body>
+</html>
