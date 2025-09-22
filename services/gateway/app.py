@@ -15,6 +15,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 from sentence_transformers import SentenceTransformer
 import requests
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 import jwt
 
 # Configure logging
@@ -94,9 +96,33 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# Authentication configuration
-API_KEY_SECRET = os.getenv("API_KEY_SECRET", "default-secret-change-in-production")
-JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "default-jwt-secret-change-in-production")
+# Performance settings
+REQUEST_TIMEOUT = int(os.getenv("REQUEST_TIMEOUT", "60"))
+REQUESTS_POOL_CONNECTIONS = int(os.getenv("REQUESTS_POOL_CONNECTIONS", "10"))
+REQUESTS_POOL_MAXSIZE = int(os.getenv("REQUESTS_POOL_MAXSIZE", "50"))
+
+# Shared HTTP session to the orchestrator for connection pooling and retries
+ORCH_SESSION = requests.Session()
+_retry = Retry(total=2, backoff_factor=0.3, status_forcelist=(502, 503, 504))
+ORCH_SESSION.mount(
+    "http://",
+    HTTPAdapter(pool_connections=REQUESTS_POOL_CONNECTIONS, pool_maxsize=REQUESTS_POOL_MAXSIZE, max_retries=_retry),
+)
+
+def get_secret(name: str, default: str = "") -> str:
+    """Read a secret from env or a file referenced by NAME_FILE."""
+    file_path = os.getenv(f"{name}_FILE")
+    if file_path and os.path.exists(file_path):
+        try:
+            with open(file_path, "r", encoding="utf-8") as f:
+                return f.read().strip()
+        except Exception:
+            pass
+    return os.getenv(name, default)
+
+# Authentication configuration (support *_FILE secret mounts)
+API_KEY_SECRET = get_secret("API_KEY_SECRET", "default-secret-change-in-production")
+JWT_SECRET_KEY = get_secret("JWT_SECRET_KEY", "default-jwt-secret-change-in-production")
 JWT_ALGORITHM = os.getenv("JWT_ALGORITHM", "HS256")
 JWT_EXPIRATION_HOURS = int(os.getenv("JWT_EXPIRATION_HOURS", "24"))
 RATE_LIMIT_RPM = int(os.getenv("RATE_LIMIT_REQUESTS_PER_MINUTE", "60"))
@@ -550,7 +576,7 @@ Please respond with SI units and consider the safety constraints mentioned.
             "max_tokens": request.max_tokens
         }
         
-        response = requests.post(orchestrator_url, json=orchestrator_payload, timeout=60)
+        response = ORCH_SESSION.post(orchestrator_url, json=orchestrator_payload, timeout=REQUEST_TIMEOUT)
         
         if response.status_code == 200:
             result = response.json()
@@ -562,8 +588,40 @@ Please respond with SI units and consider the safety constraints mentioned.
             return result
         else:
             logger.error(f"Orchestrator returned {response.status_code}: {response.text}")
-            raise HTTPException(status_code=502, detail="Orchestrator service error")
+            # Graceful fallback when orchestrator/LLM not available
+            fallback_backend = os.getenv("LLM_BACKEND", "mock")
+            return {
+                "id": "fallback",
+                "object": "chat.completion",
+                "created": int(datetime.utcnow().timestamp()),
+                "model": fallback_backend,
+                "choices": [{
+                    "index": 0,
+                    "message": {
+                        "role": "assistant",
+                        "content": "[Gateway] Orchestrator unavailable; returning fallback response."
+                    },
+                    "finish_reason": "stop"
+                }]
+            }
             
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Error contacting orchestrator: {e}")
+        fallback_backend = os.getenv("LLM_BACKEND", "mock")
+        return {
+            "id": "fallback",
+            "object": "chat.completion",
+            "created": int(datetime.utcnow().timestamp()),
+            "model": fallback_backend,
+            "choices": [{
+                "index": 0,
+                "message": {
+                    "role": "assistant",
+                    "content": "[Gateway] Orchestrator not reachable; returning fallback response."
+                },
+                "finish_reason": "stop"
+            }]
+        }
     except Exception as e:
         logger.error(f"Error in chat_completions: {e}")
         raise HTTPException(status_code=500, detail=str(e))

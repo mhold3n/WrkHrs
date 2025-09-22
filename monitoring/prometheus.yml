@@ -1,0 +1,39 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'cadvisor'
+    static_configs:
+      - targets: ['cadvisor:8080']
+
+  - job_name: 'gateway-api'
+    metrics_path: /health
+    static_configs:
+      - targets: ['gateway-api:8000']
+
+  - job_name: 'orchestrator'
+    metrics_path: /health
+    static_configs:
+      - targets: ['orchestrator:8000']
+
+  - job_name: 'rag-api'
+    metrics_path: /health
+    static_configs:
+      - targets: ['rag-api:8000']
+
+  - job_name: 'asr-api'
+    metrics_path: /health
+    static_configs:
+      - targets: ['asr-api:8000']
+
+  - job_name: 'tool-registry'
+    metrics_path: /health
+    static_configs:
+      - targets: ['tool-registry:8000']
+
+  - job_name: 'mcp'
+    metrics_path: /health
+    static_configs:
+      - targets: ['mcp:8000']
+
+

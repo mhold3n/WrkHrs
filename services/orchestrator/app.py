@@ -409,8 +409,8 @@ async def get_llm_info():
 async def switch_llm_backend(backend_type: str):
     """Switch LLM backend."""
     try:
-        if backend_type not in ["ollama", "vllm"]:
-            raise HTTPException(status_code=400, detail="Backend must be 'ollama' or 'vllm'")
+        if backend_type not in ["ollama", "vllm", "mock", "none", "disabled"]:
+            raise HTTPException(status_code=400, detail="Backend must be 'ollama', 'vllm', or 'mock'")
         
         success = await llm_manager.switch_backend(backend_type)
         if success:

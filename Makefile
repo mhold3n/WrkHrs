@@ -304,14 +304,9 @@ push-images: ## Push images to registry (requires REGISTRY env var)
 		echo "Usage: make push-images REGISTRY=ghcr.io/username"; \
 		exit 1; \
 	fi
-	@echo "$(BLUE)Pushing images to $(REGISTRY)...$(NC)"
-	@services="gateway orchestrator tool-registry mcp rag asr"; \
-	for service in $$services; do \
-		echo "Pushing $$service..."; \
-		docker tag ai-stack-$$service $(REGISTRY)/$$service:latest; \
-		docker push $(REGISTRY)/$$service:latest; \
-	done
-	@echo "$(GREEN)✓ All images pushed$(NC)"
+	@echo "$(BLUE)Building and pushing images via buildx bake...$(NC)"
+	docker buildx bake -f docker/docker-bake.hcl --push
+	@echo "$(GREEN)✓ Images built and pushed$(NC)"
 
 deploy-prod: ## Deploy to production (after pushing images)
 	@echo "$(BLUE)Deploying to production...$(NC)"
@@ -335,6 +330,17 @@ dev-setup: setup build-dev up-dev pull-models init-data ## Complete development 
 monitor: ## Show real-time resource usage
 	@echo "$(BLUE)Monitoring containers (Ctrl+C to exit)...$(NC)"
 	docker stats $$(docker compose $(COMPOSE_DEV) ps -q)
+
+monitoring-up: ## Start monitoring stack (Prometheus, Grafana, cAdvisor)
+	@echo "$(BLUE)Starting monitoring stack...$(NC)"
+	docker compose -f compose/docker-compose.monitoring.yml up -d
+	@echo "Grafana: http://localhost:3000 (admin/admin)"
+	@echo "Prometheus: http://localhost:9090"
+	@echo "cAdvisor: http://localhost:8088"
+
+monitoring-down: ## Stop monitoring stack
+	@echo "$(BLUE)Stopping monitoring stack...$(NC)"
+	docker compose -f compose/docker-compose.monitoring.yml down
 
 # Plugin management
 refresh-plugins: ## Refresh tool registry plugins

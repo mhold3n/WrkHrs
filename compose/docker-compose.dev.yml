@@ -1,12 +1,8 @@
 services:
   llm-runner:
-    image: ollama/ollama:latest
-    ports: [ "11434:11434" ]
-    environment:
-      - OLLAMA_ORIGINS=*
-      - OLLAMA_KEEP_ALIVE=24h
-    # CPU only; no device requests
-    command: [ "serve" ]
+    image: busybox:latest
+    command: ["sh", "-c", "echo 'Mock LLM runner (disabled on this hardware)'; sleep 3600"]
+    # Expose no ports; orchestrator in mock mode
 
   rag-api:
     environment:

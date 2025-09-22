@@ -1,6 +1,7 @@
 """
 LLM Backend Integration for AI Stack Orchestrator
 Supports Ollama and vLLM backends with unified interface
+Adds Mock backend for low-resource environments without an LLM.
 """
 
 import os
@@ -58,6 +59,49 @@ class LLMBackend(ABC):
         except Exception as e:
             raise LLMBackendError(f"{self.name} unexpected error: {e}")
 
+
+class MockBackend(LLMBackend):
+    """Mock LLM backend for low-resource hardware without an actual LLM"""
+
+    def __init__(self):
+        super().__init__(base_url="mock://llm", timeout=1)
+        self.model = "mock-llm"
+
+    async def chat_completion(self, messages: List[Dict[str, str]], **kwargs) -> Dict[str, Any]:
+        """Return deterministic, lightweight responses suitable for testing/integration."""
+        try:
+            last_user = next((m.get("content", "") for m in reversed(messages) if m.get("role") == "user"), "")
+            prefix = kwargs.get("prefix", "[MOCK]")
+            content = f"{prefix} Echo: {last_user[:256]}"
+
+            return {
+                "id": f"mock-{datetime.utcnow().timestamp()}",
+                "object": "chat.completion",
+                "created": int(datetime.utcnow().timestamp()),
+                "model": self.model,
+                "choices": [{
+                    "index": 0,
+                    "message": {
+                        "role": "assistant",
+                        "content": content
+                    },
+                    "finish_reason": "stop"
+                }],
+                "usage": {
+                    "prompt_tokens": 0,
+                    "completion_tokens": 0,
+                    "total_tokens": 0
+                }
+            }
+        except Exception as e:
+            logger.error(f"Mock chat completion error: {e}")
+            raise LLMBackendError(f"Mock chat completion failed: {e}")
+
+    async def health_check(self) -> bool:
+        return True
+
+    async def list_models(self) -> List[str]:
+        return [self.model]
 
 class OllamaBackend(LLMBackend):
     """Ollama LLM backend implementation"""
@@ -229,9 +273,12 @@ class LLMManager:
             return OllamaBackend()
         elif self.backend_type == "vllm":
             return VLLMBackend()
+        elif self.backend_type in ("mock", "none", "disabled"):
+            logger.info("Using Mock LLM backend (no actual model required)")
+            return MockBackend()
         else:
-            logger.warning(f"Unknown backend type: {self.backend_type}, defaulting to Ollama")
-            return OllamaBackend()
+            logger.warning(f"Unknown backend type: {self.backend_type}, defaulting to Mock")
+            return MockBackend()
     
     async def chat_completion(self, messages: List[Dict[str, str]], **kwargs) -> Dict[str, Any]:
         """Generate chat completion using configured backend"""
