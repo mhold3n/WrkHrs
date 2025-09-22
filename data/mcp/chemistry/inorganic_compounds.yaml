@@ -1,0 +1,112 @@
+compounds:
+  - id: "sodium_chloride"
+    title: "Sodium Chloride (Table Salt)"
+    content: "Sodium chloride (NaCl) is an ionic compound composed of sodium and chloride ions. It is essential for life and is the most common type of salt. NaCl has a face-centered cubic crystal structure and is highly soluble in water."
+    metadata:
+      formula: "NaCl"
+      molecular_weight: 58.44
+      cas_number: "7647-14-5"
+      iupac_name: "sodium chloride"
+      crystal_system: "cubic"
+      melting_point: 801
+      boiling_point: 1465
+      density: 2.17
+      solubility_water: 360  # g/L at 25°C
+      lattice_energy: 786   # kJ/mol
+      ionic_radius_na: 1.02  # Angstroms
+      ionic_radius_cl: 1.81  # Angstroms
+    tags: ["ionic", "salt", "essential", "electrolyte", "preservative"]
+
+  - id: "calcium_carbonate"
+    title: "Calcium Carbonate"
+    content: "Calcium carbonate (CaCO3) is a chemical compound found in rocks, shells, and pearls. It is the main component of limestone and marble. CaCO3 exists in several crystalline forms including calcite and aragonite."
+    metadata:
+      formula: "CaCO3"
+      molecular_weight: 100.09
+      cas_number: "471-34-1"
+      iupac_name: "calcium carbonate"
+      crystal_system: "hexagonal" # calcite form
+      melting_point: 1339  # decomposes
+      density: 2.71
+      solubility_water: 0.013  # g/L at 25°C
+      polymorphs: ["calcite", "aragonite", "vaterite"]
+      decomposition_temp: 840
+    tags: ["carbonate", "mineral", "limestone", "antacid", "filler"]
+
+  - id: "sulfuric_acid"
+    title: "Sulfuric Acid"
+    content: "Sulfuric acid (H2SO4) is a highly corrosive strong acid. It is one of the most important industrial chemicals, used in fertilizer production, ore processing, and chemical synthesis. Concentrated sulfuric acid is a powerful dehydrating agent."
+    metadata:
+      formula: "H2SO4"
+      molecular_weight: 98.08
+      cas_number: "7664-93-9"
+      iupac_name: "sulfuric acid"
+      melting_point: 10.31
+      boiling_point: 337
+      density: 1.84  # for concentrated acid
+      viscosity: 26.7  # mPa·s at 20°C
+      pka1: -3  # very strong acid
+      pka2: 1.9
+      dielectric_constant: 84
+      heat_of_formation: -814  # kJ/mol
+    tags: ["strong acid", "industrial", "corrosive", "dehydrating agent", "catalyst"]
+
+  - id: "ammonia"
+    title: "Ammonia"
+    content: "Ammonia (NH3) is a colorless gas with a characteristic pungent smell. It is a key precursor to fertilizers and is used in many commercial cleaning products. Ammonia readily dissolves in water to form ammonium hydroxide."
+    metadata:
+      formula: "NH3"
+      molecular_weight: 17.03
+      cas_number: "7664-41-7"
+      iupac_name: "ammonia"
+      melting_point: -77.73
+      boiling_point: -33.34
+      density: 0.769  # liquid at -33°C
+      solubility_water: 470  # g/L at 25°C
+      kb: 1.8e-5  # base dissociation constant
+      dipole_moment: 1.47  # Debye
+      bond_angle: 107  # degrees
+    tags: ["base", "fertilizer", "refrigerant", "cleaning agent", "precursor"]
+
+  - id: "iron_oxide"
+    title: "Iron(III) Oxide (Rust)"
+    content: "Iron(III) oxide (Fe2O3) is one of the most common iron oxides. It occurs naturally as the mineral hematite and is the main component of rust. It has a distinctive reddish-brown color and is used as a pigment."
+    metadata:
+      formula: "Fe2O3"
+      molecular_weight: 159.69
+      cas_number: "1309-37-1"
+      iupac_name: "iron(III) oxide"
+      crystal_system: "trigonal"
+      melting_point: 1566
+      density: 5.24
+      magnetic_properties: "antiferromagnetic"
+      band_gap: 2.1  # eV
+      refractive_index: 2.9
+      mohs_hardness: 5.5
+    tags: ["oxide", "rust", "pigment", "hematite", "magnetic"]
+
+safety_data:
+  general_precautions:
+    - "Always wear appropriate personal protective equipment"
+    - "Work in well-ventilated areas"
+    - "Have safety shower and eyewash stations accessible"
+    - "Keep safety data sheets readily available"
+  
+  storage_requirements:
+    acids: "Store in corrosion-resistant containers, away from bases and metals"
+    bases: "Store away from acids and in dry conditions"
+    salts: "Store in dry conditions to prevent hydration"
+    oxidizers: "Store away from organic materials and reducing agents"
+
+analytical_methods:
+  titration:
+    description: "Quantitative analysis using acid-base or redox reactions"
+    applications: ["acid concentration", "purity determination", "stoichiometry"]
+  
+  spectroscopy:
+    description: "Identification and quantification using electromagnetic radiation"
+    types: ["IR", "UV-Vis", "NMR", "MS"]
+  
+  crystallography:
+    description: "Structure determination using X-ray diffraction"
+    applications: ["crystal structure", "phase identification", "purity"]

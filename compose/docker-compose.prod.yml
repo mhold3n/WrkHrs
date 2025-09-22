@@ -4,6 +4,7 @@ services:
     ports: [ "8001:8000" ]  # OpenAI-compatible
     environment:
       - NVIDIA_VISIBLE_DEVICES=all
+      - CUDA_VISIBLE_DEVICES=all
     deploy:
       resources:
         reservations:
@@ -13,17 +14,27 @@ services:
               capabilities: [gpu]
     volumes:
       - "models:/models"
+    restart: unless-stopped
     command: [
       "python",
       "-m", "vllm.entrypoints.openai.api_server",
       "--model", "${VLLM_MODEL}",
-      "--trust-remote-code"
+      "--trust-remote-code",
+      "--host", "0.0.0.0",
+      "--port", "8000"
     ]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 120s
 
   asr-api:
     environment:
       - ASR_MODEL=${ASR_MODEL}
       - ASR_DEVICE=cuda
+      - CUDA_VISIBLE_DEVICES=0
     deploy:
       resources:
         reservations:
@@ -31,3 +42,4 @@ services:
             - driver: nvidia
               count: 1
               capabilities: [gpu]
+    restart: unless-stopped

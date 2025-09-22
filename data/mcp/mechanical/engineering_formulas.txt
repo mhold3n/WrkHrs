@@ -1,0 +1,356 @@
+MECHANICAL ENGINEERING FORMULAS AND PRINCIPLES
+==============================================
+
+STATICS AND DYNAMICS
+-------------------
+
+Newton's Laws of Motion:
+1st Law: An object at rest stays at rest, an object in motion stays in motion unless acted upon by an external force
+2nd Law: F = ma (Force equals mass times acceleration)
+3rd Law: For every action, there is an equal and opposite reaction
+
+Equilibrium Conditions:
+ΣFx = 0  (Sum of forces in x-direction equals zero)
+ΣFy = 0  (Sum of forces in y-direction equals zero)
+ΣMz = 0  (Sum of moments about z-axis equals zero)
+
+Moment of a Force:
+M = F × d  (Force times perpendicular distance)
+M = F × r × sin(θ)  (Force times distance times sine of angle)
+
+Angular Motion:
+ω = θ/t  (Angular velocity = angle/time)
+α = ω/t  (Angular acceleration = angular velocity/time)
+v = ωr   (Linear velocity = angular velocity × radius)
+a = αr   (Linear acceleration = angular acceleration × radius)
+
+Rotational Kinetic Energy:
+KE = ½Iω²  (where I is moment of inertia)
+
+STRENGTH OF MATERIALS
+--------------------
+
+Stress and Strain:
+σ = F/A      (Normal stress = force/area)
+τ = V/A      (Shear stress = shear force/area)
+ε = δ/L      (Strain = deformation/original length)
+γ = θ       (Shear strain = angle of deformation)
+
+Hooke's Law:
+σ = Eε      (Stress = Elastic modulus × strain)
+τ = Gγ      (Shear stress = Shear modulus × shear strain)
+
+Poisson's Ratio:
+ν = -εlateral/εaxial
+
+Young's Modulus (Elastic Modulus):
+E = σ/ε = (F/A)/(δ/L)
+
+Shear Modulus:
+G = τ/γ
+
+Relationship between E, G, and ν:
+G = E/[2(1+ν)]
+
+BENDING THEORY
+-------------
+
+Bending Stress (Flexure Formula):
+σ = My/I
+where:
+M = bending moment
+y = distance from neutral axis
+I = moment of inertia
+
+Section Modulus:
+S = I/c  (where c is distance to extreme fiber)
+σmax = M/S
+
+Deflection Equations:
+For simply supported beam with point load P at center:
+δmax = PL³/(48EI)
+
+For cantilever beam with point load P at free end:
+δmax = PL³/(3EI)
+
+For simply supported beam with uniform load w:
+δmax = 5wL⁴/(384EI)
+
+TORSION
+-------
+
+Torsional Shear Stress:
+τ = Tr/J
+where:
+T = applied torque
+r = radial distance from center
+J = polar moment of inertia
+
+For circular shafts:
+J = πd⁴/32  (solid shaft)
+J = π(do⁴ - di⁴)/32  (hollow shaft)
+
+Angle of Twist:
+θ = TL/(GJ)
+where:
+L = length of shaft
+G = shear modulus
+
+Power Transmission:
+P = Tω  (Power = Torque × Angular velocity)
+P = 2πTn/60  (where n is in rpm)
+
+COLUMN BUCKLING
+--------------
+
+Euler's Buckling Formula:
+Pcr = π²EI/(KL)²
+where:
+Pcr = critical buckling load
+E = elastic modulus
+I = minimum moment of inertia
+K = effective length factor
+L = actual length
+
+Effective Length Factors (K):
+- Both ends pinned: K = 1.0
+- Both ends fixed: K = 0.5
+- One end fixed, one pinned: K = 0.7
+- One end fixed, one free: K = 2.0
+
+Slenderness Ratio:
+λ = KL/r  (where r = radius of gyration = √(I/A))
+
+FATIGUE ANALYSIS
+---------------
+
+S-N Curve Equation:
+N = A × S^(-m)
+where:
+N = number of cycles to failure
+S = stress amplitude
+A, m = material constants
+
+Endurance Limit (Steel):
+Se = 0.5 × Sut  (for Sut ≤ 200 ksi)
+Se = 100 ksi    (for Sut > 200 ksi)
+
+Goodman Relation:
+σa/Se + σm/Sut = 1
+where:
+σa = alternating stress
+σm = mean stress
+Se = endurance limit
+Sut = ultimate tensile strength
+
+VIBRATIONS
+----------
+
+Natural Frequency (Single DOF):
+fn = (1/2π) × √(k/m)
+where:
+k = stiffness
+m = mass
+
+Damped Natural Frequency:
+fd = fn × √(1 - ζ²)
+where ζ = damping ratio
+
+Critical Damping:
+cc = 2√(km)
+
+Damping Ratio:
+ζ = c/cc
+
+Transmissibility:
+TR = √[(1 + (2ζr)²)/((1-r²)² + (2ζr)²)]
+where r = ω/ωn (frequency ratio)
+
+FLUID MECHANICS APPLICATIONS
+---------------------------
+
+Bernoulli's Equation:
+P₁/ρ + v₁²/2 + gz₁ = P₂/ρ + v₂²/2 + gz₂
+
+Reynolds Number:
+Re = ρvD/μ = vD/ν
+where:
+ρ = density
+v = velocity
+D = characteristic length
+μ = dynamic viscosity
+ν = kinematic viscosity
+
+Darcy-Weisbach Equation (pipe flow):
+hf = f(L/D)(v²/2g)
+where:
+hf = head loss
+f = friction factor
+L = pipe length
+D = pipe diameter
+
+THERMODYNAMICS
+--------------
+
+First Law of Thermodynamics:
+ΔU = Q - W
+where:
+ΔU = change in internal energy
+Q = heat added to system
+W = work done by system
+
+Ideal Gas Law:
+PV = nRT = mRT/M
+where:
+P = pressure
+V = volume
+n = number of moles
+R = universal gas constant
+m = mass
+M = molecular weight
+
+Heat Transfer:
+Conduction: q = -kA(dT/dx)
+Convection: q = hA(Ts - T∞)
+Radiation: q = εσA(T₁⁴ - T₂⁴)
+
+MACHINE DESIGN
+--------------
+
+Gear Ratio:
+i = N₁/N₂ = D₂/D₁ = ω₂/ω₁
+where:
+N = number of teeth
+D = pitch diameter
+ω = angular velocity
+
+Belt Drive:
+Velocity ratio: VR = D₁/D₂
+Belt velocity: v = πDn/12 (ft/min)
+Power: HP = Tv/63,025
+where T = torque (lb-in), v = belt velocity (ft/min)
+
+Bearing Life:
+L₁₀ = (C/P)ᵖ
+where:
+L₁₀ = bearing life (millions of revolutions)
+C = basic dynamic load rating
+P = equivalent dynamic load
+p = 3 for ball bearings, 10/3 for roller bearings
+
+STRESS CONCENTRATIONS
+--------------------
+
+Stress Concentration Factor:
+σmax = Kt × σnom
+
+Typical Kt values:
+- Circular hole in tension: Kt ≈ 3.0
+- Sharp rectangular notch: Kt ≈ 5-10
+- Fillet radius: Kt = function of r/d ratio
+
+Fatigue Notch Factor:
+Kf = 1 + q(Kt - 1)
+where q = notch sensitivity factor
+
+UNITS AND CONVERSIONS
+--------------------
+
+Force:
+1 lbf = 4.448 N
+1 kip = 1000 lbf = 4448 N
+
+Pressure/Stress:
+1 psi = 6895 Pa = 6.895 kPa
+1 ksi = 6.895 MPa
+1 bar = 100 kPa = 14.5 psi
+
+Energy/Work:
+1 ft-lbf = 1.356 J
+1 Btu = 1055 J
+1 hp-hr = 2.685 MJ
+
+Power:
+1 hp = 746 W = 550 ft-lbf/s
+1 kW = 1.341 hp
+
+Temperature:
+°F = (9/5)°C + 32
+K = °C + 273.15
+°R = °F + 459.67
+
+MATERIAL PROPERTIES (TYPICAL VALUES)
+-----------------------------------
+
+Steel (AISI 1020):
+E = 30,000 ksi = 207 GPa
+ν = 0.29
+ρ = 0.284 lb/in³ = 7860 kg/m³
+Sy = 36 ksi = 248 MPa
+Su = 58 ksi = 400 MPa
+
+Aluminum (6061-T6):
+E = 10,000 ksi = 69 GPa
+ν = 0.33
+ρ = 0.098 lb/in³ = 2700 kg/m³
+Sy = 40 ksi = 276 MPa
+Su = 45 ksi = 310 MPa
+
+Titanium (Ti-6Al-4V):
+E = 16,500 ksi = 114 GPa
+ν = 0.32
+ρ = 0.160 lb/in³ = 4430 kg/m³
+Sy = 128 ksi = 883 MPa
+Su = 138 ksi = 950 MPa
+
+SAFETY FACTORS
+--------------
+
+General Guidelines:
+- Dead loads: SF = 2-3
+- Live loads: SF = 3-4
+- Impact loads: SF = 5-8
+- Brittle materials: SF = 4-6
+- Ductile materials: SF = 2-4
+- Fatigue loading: SF = 4-8
+
+Factors affecting safety factor selection:
+- Uncertainty in loading
+- Material property variation
+- Manufacturing quality
+- Environmental conditions
+- Consequences of failure
+- Economic considerations
+
+DESIGN PROCESS
+--------------
+
+1. Problem Definition
+   - Identify requirements and constraints
+   - Define performance criteria
+   - Establish design specifications
+
+2. Conceptual Design
+   - Generate multiple concepts
+   - Evaluate feasibility
+   - Select promising alternatives
+
+3. Preliminary Design
+   - Size major components
+   - Perform stress analysis
+   - Check against design criteria
+
+4. Detailed Design
+   - Specify materials and dimensions
+   - Create detailed drawings
+   - Perform comprehensive analysis
+
+5. Testing and Validation
+   - Prototype testing
+   - Verification of performance
+   - Design optimization
+
+6. Production
+   - Manufacturing planning
+   - Quality control procedures
+   - Documentation and maintenance

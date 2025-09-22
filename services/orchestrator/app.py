@@ -12,6 +12,9 @@ from langgraph.prebuilt import ToolNode
 from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
 from langchain_core.tools import tool
 
+# Import our LLM backend manager
+from llm_backends import llm_manager, LLMBackendError
+
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,
@@ -211,8 +214,8 @@ def gather_context(state: WorkflowState) -> WorkflowState:
     state.current_step = "generate_response"
     return state
 
-def generate_response(state: WorkflowState) -> WorkflowState:
-    """Generate final response using LLM."""
+async def generate_response(state: WorkflowState) -> WorkflowState:
+    """Generate final response using LLM backend manager."""
     try:
         # Prepare enhanced context
         context_parts = []
@@ -246,44 +249,32 @@ def generate_response(state: WorkflowState) -> WorkflowState:
                     "content": f"Additional Context:\n{context}"
                 })
         
-        # Call LLM service (Ollama/vLLM)
-        llm_backend = os.getenv("LLM_BACKEND", "ollama")
-        
-        if llm_backend == "ollama":
-            llm_url = "http://llm-runner:11434/api/chat"
-            payload = {
-                "model": os.getenv("OLLAMA_MODEL", "llama3:8b-instruct"),
-                "messages": enhanced_messages,
-                "stream": False
-            }
-        else:  # vLLM
-            llm_url = "http://llm-runner:8000/v1/chat/completions"
-            payload = {
-                "model": os.getenv("VLLM_MODEL", "default"),
-                "messages": enhanced_messages,
-                "temperature": 0.7,
-                "max_tokens": 1000
-            }
-        
-        response = requests.post(llm_url, json=payload, timeout=60)
-        
-        if response.status_code == 200:
-            result = response.json()
+        # Use LLM backend manager for generation
+        try:
+            result = await llm_manager.chat_completion(
+                messages=enhanced_messages,
+                temperature=0.7,
+                max_tokens=1000
+            )
             
-            if llm_backend == "ollama":
-                state.final_response = result.get("message", {}).get("content", "No response generated")
-            else:  # vLLM
-                choices = result.get("choices", [])
-                if choices:
-                    state.final_response = choices[0].get("message", {}).get("content", "No response generated")
-                else:
-                    state.final_response = "No response generated"
-        else:
-            logger.error(f"LLM service returned {response.status_code}: {response.text}")
-            state.final_response = f"Error generating response: {response.status_code}"
+            # Extract response content
+            choices = result.get("choices", [])
+            if choices:
+                state.final_response = choices[0].get("message", {}).get("content", "No response generated")
+            else:
+                state.final_response = "No response generated"
+                
+            logger.info(f"Successfully generated response using {llm_manager.backend_type} backend")
+            
+        except LLMBackendError as e:
+            logger.error(f"LLM backend error: {e}")
+            state.final_response = f"LLM service error: {str(e)}"
+        except Exception as e:
+            logger.error(f"Unexpected error during LLM generation: {e}")
+            state.final_response = f"Error generating response: {str(e)}"
         
     except Exception as e:
-        logger.error(f"Error generating response: {e}")
+        logger.error(f"Error in generate_response: {e}")
         state.final_response = f"Error generating response: {str(e)}"
     
     state.current_step = "complete"
@@ -318,11 +309,34 @@ workflow_app = create_workflow()
 @api.get("/health")
 async def health_check():
     """Health check endpoint"""
-    return {
-        "status": "healthy",
-        "timestamp": datetime.utcnow().isoformat(),
-        "workflow_ready": workflow_app is not None
-    }
+    try:
+        # Basic health check
+        basic_health = {
+            "status": "healthy",
+            "timestamp": datetime.utcnow().isoformat(),
+            "workflow_ready": workflow_app is not None
+        }
+        
+        # Add LLM backend health if available
+        try:
+            llm_health = await llm_manager.health_check()
+            basic_health["llm_backend"] = llm_health
+        except Exception as e:
+            logger.warning(f"LLM health check failed: {e}")
+            basic_health["llm_backend"] = {
+                "healthy": False,
+                "error": str(e)
+            }
+        
+        return basic_health
+        
+    except Exception as e:
+        logger.error(f"Health check error: {e}")
+        return {
+            "status": "unhealthy",
+            "error": str(e),
+            "timestamp": datetime.utcnow().isoformat()
+        }
 
 @api.post("/chat")
 async def chat_endpoint(request: ChatRequest):
@@ -374,6 +388,70 @@ async def workflow_status():
     except Exception as e:
         logger.error(f"Error getting workflow status: {e}")
         return {"status": "error", "message": str(e)}
+
+@api.get("/llm/info")
+async def get_llm_info():
+    """Get LLM backend information."""
+    try:
+        backend_info = llm_manager.get_backend_info()
+        health_info = await llm_manager.health_check()
+        
+        return {
+            "backend_info": backend_info,
+            "health": health_info,
+            "available_models": await llm_manager.list_models()
+        }
+    except Exception as e:
+        logger.error(f"Error getting LLM info: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api.post("/llm/switch")
+async def switch_llm_backend(backend_type: str):
+    """Switch LLM backend."""
+    try:
+        if backend_type not in ["ollama", "vllm"]:
+            raise HTTPException(status_code=400, detail="Backend must be 'ollama' or 'vllm'")
+        
+        success = await llm_manager.switch_backend(backend_type)
+        if success:
+            return {
+                "success": True,
+                "message": f"Switched to {backend_type} backend",
+                "new_backend": llm_manager.get_backend_info()
+            }
+        else:
+            raise HTTPException(status_code=500, detail=f"Failed to switch to {backend_type}")
+            
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error switching LLM backend: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api.post("/llm/test")
+async def test_llm():
+    """Test LLM backend with a simple request."""
+    try:
+        test_messages = [
+            {"role": "user", "content": "Hello! Please respond with 'LLM test successful' if you can read this."}
+        ]
+        
+        result = await llm_manager.chat_completion(test_messages, max_tokens=50)
+        
+        return {
+            "success": True,
+            "backend": llm_manager.backend_type,
+            "test_response": result.get("choices", [{}])[0].get("message", {}).get("content", ""),
+            "full_result": result
+        }
+        
+    except Exception as e:
+        logger.error(f"LLM test failed: {e}")
+        return {
+            "success": False,
+            "backend": llm_manager.backend_type,
+            "error": str(e)
+        }
 
 if __name__ == "__main__":
     import uvicorn

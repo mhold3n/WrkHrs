@@ -1,0 +1,170 @@
+[
+  {
+    "id": "beam_stress_theory",
+    "title": "Beam Stress and Deflection Theory",
+    "content": "Beam stress analysis involves calculating stresses and deflections in structural members under various loading conditions. The fundamental equations are based on Euler-Bernoulli beam theory, which assumes plane sections remain plane and material behavior is elastic.",
+    "metadata": {
+      "theory_type": "Euler-Bernoulli",
+      "assumptions": ["plane sections remain plane", "linear elastic behavior", "small deflections"],
+      "key_equations": {
+        "bending_stress": "σ = M*y/I",
+        "deflection": "δ = f(load, length, E, I)",
+        "shear_stress": "τ = V*Q/(I*t)"
+      },
+      "applications": ["building design", "bridge engineering", "machine design"],
+      "limitations": ["assumes small deflections", "ignores shear deformation", "linear elastic only"]
+    },
+    "tags": ["beam", "stress", "deflection", "bending", "structural"]
+  },
+  {
+    "id": "simply_supported_beam",
+    "title": "Simply Supported Beam Analysis",
+    "content": "A simply supported beam is supported at both ends with pinned connections that allow rotation but prevent translation. For a point load P at center of span L, maximum moment is PL/4 occurring at midspan, and maximum deflection is PL³/(48EI).",
+    "metadata": {
+      "support_type": "pinned",
+      "boundary_conditions": ["zero displacement at supports", "zero moment at supports"],
+      "point_load_center": {
+        "max_moment": "P*L/4",
+        "max_deflection": "P*L³/(48*E*I)",
+        "location_max_moment": "midspan",
+        "location_max_deflection": "midspan"
+      },
+      "distributed_load": {
+        "max_moment": "w*L²/8",
+        "max_deflection": "5*w*L⁴/(384*E*I)",
+        "load_intensity": "w (force per unit length)"
+      },
+      "common_applications": ["floor joists", "bridge spans", "equipment supports"]
+    },
+    "tags": ["simply supported", "beam", "moment", "deflection", "structural analysis"]
+  },
+  {
+    "id": "cantilever_beam",
+    "title": "Cantilever Beam Analysis", 
+    "content": "A cantilever beam is fixed at one end and free at the other. This creates a statically determinate structure where the maximum moment occurs at the fixed support. For a point load P at the free end, maximum moment is PL and maximum deflection is PL³/(3EI).",
+    "metadata": {
+      "support_type": "fixed",
+      "boundary_conditions": ["zero displacement at fixed end", "zero rotation at fixed end"],
+      "point_load_end": {
+        "max_moment": "P*L",
+        "max_deflection": "P*L³/(3*E*I)", 
+        "location_max_moment": "fixed support",
+        "location_max_deflection": "free end"
+      },
+      "distributed_load": {
+        "max_moment": "w*L²/2",
+        "max_deflection": "w*L⁴/(8*E*I)",
+        "location_max_moment": "fixed support"
+      },
+      "common_applications": ["diving boards", "cranes", "balconies", "overhangs"]
+    },
+    "tags": ["cantilever", "beam", "fixed support", "overhang", "structural"]
+  },
+  {
+    "id": "column_buckling",
+    "title": "Column Buckling Analysis",
+    "content": "Column buckling is a sudden lateral deflection of a slender member under axial compression. The critical buckling load is given by Euler's formula: Pcr = π²EI/(KL)², where K is the effective length factor depending on end conditions.",
+    "metadata": {
+      "failure_mode": "buckling",
+      "euler_formula": "P_cr = π²*E*I/(K*L)²",
+      "effective_length_factors": {
+        "pinned_both_ends": 1.0,
+        "fixed_both_ends": 0.5,
+        "fixed_pinned": 0.7,
+        "fixed_free": 2.0
+      },
+      "slenderness_ratio": "L/r (length over radius of gyration)",
+      "design_considerations": ["slenderness limits", "material yield strength", "lateral bracing"],
+      "applications": ["structural columns", "compression members", "struts"]
+    },
+    "tags": ["buckling", "column", "compression", "stability", "euler"]
+  },
+  {
+    "id": "stress_concentration",
+    "title": "Stress Concentration Effects",
+    "content": "Stress concentrations occur at geometric discontinuities such as holes, notches, and fillets. The stress concentration factor Kt relates the maximum stress to the nominal stress. Sharp corners create higher stress concentrations than smooth transitions.",
+    "metadata": {
+      "definition": "σ_max = K_t * σ_nominal",
+      "common_sources": ["holes", "notches", "fillets", "threads", "welds"],
+      "typical_kt_values": {
+        "circular_hole": 3.0,
+        "sharp_notch": "5-10",
+        "smooth_fillet": "1.5-2.0",
+        "threaded_section": "2.5-4.0"
+      },
+      "mitigation_strategies": ["generous fillets", "gradual transitions", "shot peening", "prestressing"],
+      "fatigue_impact": "reduces fatigue life significantly"
+    },
+    "tags": ["stress concentration", "notch", "fatigue", "design", "discontinuity"]
+  },
+  {
+    "id": "mohr_circle",
+    "title": "Mohr's Circle for Stress Analysis",
+    "content": "Mohr's circle is a graphical method for analyzing the state of stress at a point. It provides a visual representation of how normal and shear stresses vary with orientation and helps determine principal stresses and maximum shear stress.",
+    "metadata": {
+      "purpose": "stress transformation analysis",
+      "x_axis": "normal stress (σ)",
+      "y_axis": "shear stress (τ)",
+      "circle_center": "(σx + σy)/2",
+      "circle_radius": "√[(σx - σy)²/4 + τxy²]",
+      "principal_stresses": ["σ1 = σc + R", "σ2 = σc - R"],
+      "max_shear_stress": "τ_max = R = (σ1 - σ2)/2",
+      "applications": ["plane stress analysis", "strain gauge interpretation", "failure analysis"]
+    },
+    "tags": ["mohr circle", "stress transformation", "principal stress", "shear stress"]
+  },
+  {
+    "id": "fatigue_analysis",
+    "title": "Fatigue Analysis and S-N Curves",
+    "content": "Fatigue failure occurs under repeated loading at stress levels below the material's ultimate strength. S-N curves show the relationship between stress amplitude and number of cycles to failure. The endurance limit is the stress below which fatigue failure theoretically will not occur.",
+    "metadata": {
+      "curve_type": "stress vs cycles (S-N)",
+      "regions": {
+        "low_cycle": "< 1000 cycles",
+        "high_cycle": "> 10^6 cycles",
+        "infinite_life": "> 10^7 cycles"
+      },
+      "endurance_limit": {
+        "steel": "approximately 0.5 * ultimate strength",
+        "aluminum": "no true endurance limit",
+        "titanium": "approximately 0.6 * ultimate strength"
+      },
+      "factors_affecting_fatigue": ["mean stress", "surface finish", "size effect", "environment"],
+      "design_methods": ["safe life", "damage tolerant", "infinite life"]
+    },
+    "tags": ["fatigue", "s-n curve", "endurance limit", "cyclic loading", "failure"]
+  },
+  {
+    "id": "vibration_analysis",
+    "title": "Mechanical Vibration Analysis",
+    "content": "Mechanical vibrations involve oscillatory motion about an equilibrium position. Natural frequency depends on system mass and stiffness (fn = 1/(2π)√(k/m)). Resonance occurs when forcing frequency matches natural frequency, potentially causing large amplitudes.",
+    "metadata": {
+      "natural_frequency": "f_n = (1/2π) * √(k/m)",
+      "damping_types": ["viscous", "coulomb", "structural"],
+      "vibration_types": ["free", "forced", "random"],
+      "resonance_condition": "forcing frequency = natural frequency",
+      "damping_ratio": "ζ = c / (2√(mk))",
+      "response_parameters": ["amplitude", "phase", "transmissibility"],
+      "applications": ["machinery design", "earthquake engineering", "vehicle suspension"]
+    },
+    "tags": ["vibration", "resonance", "natural frequency", "damping", "dynamics"]
+  },
+  {
+    "id": "bearing_analysis",
+    "title": "Bearing Load Analysis and Selection",
+    "content": "Bearings support rotating shafts and must be selected based on load capacity, speed, and life requirements. Ball bearings handle moderate radial and thrust loads, while roller bearings handle higher radial loads. Load life relationship follows L10 = (C/P)^p where p=3 for ball bearings.",
+    "metadata": {
+      "bearing_types": ["ball", "roller", "needle", "thrust", "tapered roller"],
+      "load_capacity": "basic dynamic load rating (C)",
+      "life_equation": "L10 = (C/P)^p",
+      "life_factors": {
+        "ball_bearings": 3,
+        "roller_bearings": 10/3
+      },
+      "selection_criteria": ["load magnitude", "load direction", "speed", "precision", "environment"],
+      "failure_modes": ["fatigue", "wear", "lubrication failure", "contamination"],
+      "lubrication": ["grease", "oil", "solid lubricants"]
+    },
+    "tags": ["bearing", "load rating", "fatigue life", "lubrication", "shaft support"]
+  }
+]

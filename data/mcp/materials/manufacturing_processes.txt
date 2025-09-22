@@ -1,0 +1,473 @@
+MATERIALS AND MANUFACTURING PROCESSES
+=====================================
+
+CASTING PROCESSES
+----------------
+
+Sand Casting:
+- Most versatile and economical casting process
+- Suitable for complex shapes and large parts
+- Typical tolerances: ±3-5mm
+- Surface finish: 6-25 μm Ra
+- Materials: most metals and alloys
+- Advantages: low cost tooling, complex geometries
+- Disadvantages: poor surface finish, dimensional accuracy
+
+Investment Casting (Lost Wax):
+- High precision casting for complex parts
+- Typical tolerances: ±0.13mm
+- Surface finish: 1.6-3.2 μm Ra
+- Materials: steels, superalloys, titanium
+- Advantages: excellent surface finish, tight tolerances
+- Disadvantages: high cost, size limitations
+
+Die Casting:
+- High-pressure casting in metal molds
+- Typical tolerances: ±0.1-0.3mm
+- High production rates
+- Materials: aluminum, zinc, magnesium alloys
+- Advantages: high dimensional accuracy, smooth surface
+- Disadvantages: limited to low melting point alloys
+
+Permanent Mold Casting:
+- Reusable metal molds
+- Better surface finish than sand casting
+- Faster cooling rates result in finer grain structure
+- Materials: aluminum, magnesium, copper alloys
+
+FORMING PROCESSES
+----------------
+
+Hot Working:
+Temperature: Above recrystallization temperature
+Advantages:
+- Large deformation possible
+- Lower forming forces required
+- Improved material properties through grain refinement
+- Elimination of porosity
+
+Disadvantages:
+- Poor surface finish
+- Dimensional accuracy limitations
+- Oxidation and scaling
+
+Cold Working:
+Temperature: Below recrystallization temperature
+Advantages:
+- Excellent surface finish and dimensional accuracy
+- Strain hardening increases strength
+- No heating required
+
+Disadvantages:
+- Higher forming forces
+- Limited deformation before fracture
+- Residual stresses
+
+Rolling:
+- Most widely used forming process
+- Hot rolling: structural shapes, plates, bars
+- Cold rolling: sheet metal, precision dimensions
+- Reduction per pass: 10-50% for hot, 1-5% for cold
+
+Forging:
+- Superior mechanical properties due to fiber flow
+- Open die forging: simple shapes, large parts
+- Closed die forging: complex shapes, tight tolerances
+- Typical materials: steel, aluminum, titanium
+
+Extrusion:
+- Complex cross-sections possible
+- Forward extrusion: material flows in direction of punch
+- Backward extrusion: material flows opposite to punch
+- Impact extrusion: high-speed process for thin-walled parts
+
+Drawing:
+- Wire drawing: reduction in cross-sectional area
+- Deep drawing: sheet metal forming into cups/containers
+- Typical reductions: 15-45% per pass
+
+MACHINING PROCESSES
+------------------
+
+Turning:
+- Single-point cutting tool
+- Removes material by rotation of workpiece
+- Operations: facing, tapering, threading, grooving
+- Typical tolerances: ±0.025-0.13mm
+- Surface finish: 0.8-6.3 μm Ra
+
+Milling:
+- Multi-tooth cutting tool
+- Face milling: cutting tool axis perpendicular to surface
+- End milling: cutting tool axis parallel to surface
+- Typical tolerances: ±0.05-0.13mm
+- Surface finish: 1.6-6.3 μm Ra
+
+Drilling:
+- Creates round holes using twist drills
+- Standard drill angles: 118° for general purpose
+- Typical tolerances: ±0.13mm for diameter
+- Hole quality: depends on drill geometry and cutting conditions
+
+Grinding:
+- Abrasive cutting using grinding wheel
+- Surface grinding: flat surfaces
+- Cylindrical grinding: round parts
+- Typical tolerances: ±0.0025-0.013mm
+- Surface finish: 0.1-1.6 μm Ra
+
+JOINING PROCESSES
+----------------
+
+Welding:
+Arc Welding:
+- SMAW (Stick): versatile, portable, all positions
+- GMAW (MIG): high deposition rates, good for automation
+- GTAW (TIG): highest quality, precise control
+- SAW: high deposition rates, thick sections
+
+Gas Welding:
+- Oxyfuel welding: versatile, no electricity required
+- Lower heat input than arc welding
+- Good for thin sections and repair work
+
+Resistance Welding:
+- Spot welding: sheet metal assemblies
+- Seam welding: continuous welds
+- Projection welding: multiple spots simultaneously
+
+Brazing and Soldering:
+Brazing:
+- Filler metal melting point above 450°C
+- Base metal does not melt
+- Strong joints with good corrosion resistance
+- Typical materials: brass, bronze, silver alloys
+
+Soldering:
+- Filler metal melting point below 450°C
+- Lower strength than brazing
+- Excellent for electrical connections
+- Typical materials: tin-lead, lead-free alloys
+
+Mechanical Fastening:
+- Bolts and screws: removable joints
+- Rivets: permanent joints, good for vibration
+- Adhesives: uniform stress distribution
+- Press fits: interference fits for cylindrical parts
+
+MATERIAL REMOVAL PROCESSES
+-------------------------
+
+Electrical Discharge Machining (EDM):
+- Material removal by electrical discharge
+- No mechanical forces
+- Complex shapes in hard materials
+- Wire EDM: 2D profiles through thick sections
+- Sinker EDM: 3D cavities using shaped electrode
+
+Electrochemical Machining (ECM):
+- Material removal by electrochemical dissolution
+- No tool wear
+- Complex internal passages
+- High production rates for suitable parts
+
+Chemical Milling:
+- Material removal by chemical etching
+- Uniform material removal
+- Complex shapes without mechanical stress
+- Typical applications: aerospace weight reduction
+
+Laser Machining:
+- High precision cutting and drilling
+- Minimal heat-affected zone
+- Complex 2D and 3D shapes
+- Materials: metals, polymers, ceramics
+
+POWDER METALLURGY
+----------------
+
+Process Steps:
+1. Powder production: atomization, reduction, electrolysis
+2. Powder mixing: alloying elements, lubricants
+3. Compaction: uniaxial or isostatic pressing
+4. Sintering: bonding of particles below melting point
+
+Advantages:
+- Near-net-shape manufacturing
+- Unique compositions possible
+- Minimal material waste
+- Good dimensional control
+
+Applications:
+- Automotive components (gears, bearings)
+- Cutting tools (carbide inserts)
+- Filters and porous parts
+- Magnetic materials
+
+Hot Isostatic Pressing (HIP):
+- High temperature and pressure in all directions
+- Eliminates porosity
+- Improves mechanical properties
+- Typical conditions: 1000-2000°C, 100-300 MPa
+
+ADDITIVE MANUFACTURING
+---------------------
+
+Powder Bed Fusion:
+Selective Laser Sintering (SLS):
+- Polymer powders fused by laser
+- Complex geometries without support
+- Materials: nylon, TPU, metal powders
+
+Selective Laser Melting (SLM):
+- Full melting of metal powders
+- High density parts
+- Materials: titanium, aluminum, steel, Inconel
+
+Directed Energy Deposition:
+- Material fed into focused energy beam
+- Large parts and repair applications
+- Wire or powder feedstock
+- Materials: metals, ceramics
+
+Material Extrusion:
+Fused Deposition Modeling (FDM):
+- Thermoplastic filament heated and extruded
+- Low cost and easy to use
+- Materials: PLA, ABS, PETG, engineering plastics
+
+Vat Photopolymerization:
+Stereolithography (SLA):
+- Liquid resin cured by laser
+- High resolution and smooth surface
+- Materials: photopolymer resins
+
+SURFACE TREATMENTS
+------------------
+
+Heat Treatment:
+- Hardening: increase hardness and strength
+- Tempering: improve toughness
+- Annealing: soften and relieve stress
+- Case hardening: hard surface, tough core
+
+Mechanical Treatments:
+Shot Peening:
+- Compressive residual stresses
+- Improved fatigue life
+- Surface roughening
+
+Tumbling:
+- Deburring and surface finishing
+- Abrasive media removes material
+- Improves surface finish
+
+Chemical Treatments:
+Anodizing (Aluminum):
+- Electrochemical oxidation
+- Corrosion protection and coloring
+- Typical thickness: 5-25 μm
+
+Plating:
+- Electroplating: nickel, chrome, zinc
+- Electroless plating: uniform thickness
+- Corrosion protection and wear resistance
+
+Coating Processes:
+Physical Vapor Deposition (PVD):
+- Vacuum-based coating process
+- Hard coatings: TiN, TiAlN, CrN
+- Cutting tools and wear parts
+
+Chemical Vapor Deposition (CVD):
+- Gas-phase chemical reactions
+- Uniform coating on complex shapes
+- Materials: carbides, nitrides, oxides
+
+Thermal Spray:
+- Molten or semi-molten particles
+- Thick coatings: 0.1-5mm
+- Materials: metals, ceramics, polymers
+
+QUALITY CONTROL AND TESTING
+---------------------------
+
+Dimensional Inspection:
+- Coordinate measuring machines (CMM)
+- Optical comparators
+- Laser scanning
+- Typical accuracy: ±0.001-0.005mm
+
+Surface Finish Measurement:
+- Profilometers: Ra, Rz parameters
+- Typical ranges: 0.1-50 μm Ra
+- Visual standards: machined, ground, polished
+
+Non-Destructive Testing:
+Visual Inspection:
+- Surface defects and workmanship
+- Weld quality assessment
+- Dimensional verification
+
+Penetrant Testing:
+- Surface-breaking defects
+- Fluorescent or visible dye
+- Materials: non-porous metals, ceramics
+
+Magnetic Particle Testing:
+- Ferromagnetic materials only
+- Surface and near-surface defects
+- Wet or dry magnetic particles
+
+Ultrasonic Testing:
+- Internal defects detection
+- Thickness measurement
+- Material characterization
+
+Radiographic Testing:
+- X-ray or gamma ray inspection
+- Internal defect detection
+- Permanent record of inspection
+
+Destructive Testing:
+Tensile Testing:
+- Yield strength, ultimate strength
+- Elongation and reduction in area
+- Modulus of elasticity
+
+Impact Testing:
+- Charpy or Izod tests
+- Fracture toughness
+- Temperature effects
+
+Hardness Testing:
+- Brinell: large indentation, soft materials
+- Rockwell: quick test, various scales
+- Vickers: precise, all materials
+
+MATERIAL SELECTION CRITERIA
+---------------------------
+
+Performance Requirements:
+Mechanical Properties:
+- Strength-to-weight ratio
+- Stiffness requirements
+- Toughness and impact resistance
+- Fatigue life
+- Creep resistance
+
+Physical Properties:
+- Density limitations
+- Thermal expansion matching
+- Electrical conductivity
+- Thermal conductivity
+- Magnetic properties
+
+Chemical Properties:
+- Corrosion resistance
+- Chemical compatibility
+- Oxidation resistance
+- Biocompatibility
+
+Manufacturing Considerations:
+Formability:
+- Ductility for forming operations
+- Work hardening characteristics
+- Springback behavior
+- Minimum bend radius
+
+Machinability:
+- Cutting forces and tool wear
+- Surface finish achievable
+- Chip formation characteristics
+- Heat generation
+
+Weldability:
+- Crack susceptibility
+- Heat-affected zone properties
+- Filler metal compatibility
+- Preheating requirements
+
+Economic Factors:
+Material Cost:
+- Raw material price
+- Availability and supply
+- Price volatility
+- Recycled content
+
+Processing Cost:
+- Manufacturing complexity
+- Tool wear and replacement
+- Scrap rate and rework
+- Energy consumption
+
+Life Cycle Cost:
+- Maintenance requirements
+- Service life
+- End-of-life disposal
+- Environmental impact
+
+DESIGN FOR MANUFACTURING
+-----------------------
+
+Design Guidelines:
+Simplify Geometry:
+- Minimize number of operations
+- Standard features and dimensions
+- Eliminate tight tolerances where possible
+- Use standard fasteners and components
+
+Material Optimization:
+- Select appropriate material grade
+- Minimize exotic materials
+- Consider alternative materials
+- Standardize material specifications
+
+Process Selection:
+- Match process to production volume
+- Consider secondary operations
+- Plan for quality control
+- Design for automation potential
+
+Tolerance Strategy:
+- Specify only necessary tolerances
+- Use statistical tolerance analysis
+- Consider manufacturing capability
+- Allow for material and process variation
+
+Cost Reduction Strategies:
+- Combine operations where possible
+- Eliminate finishing operations
+- Design for standard tooling
+- Minimize material waste
+- Consider near-net-shape processes
+
+ENVIRONMENTAL CONSIDERATIONS
+---------------------------
+
+Sustainable Manufacturing:
+Material Selection:
+- Recycled content utilization
+- Renewable materials
+- Low environmental impact
+- End-of-life recyclability
+
+Process Efficiency:
+- Energy consumption minimization
+- Waste reduction strategies
+- Water usage optimization
+- Emission control
+
+Life Cycle Assessment:
+- Raw material extraction impact
+- Manufacturing energy consumption
+- Transportation requirements
+- Use phase environmental impact
+- End-of-life disposal options
+
+Green Manufacturing Practices:
+- Lean manufacturing principles
+- Waste stream recycling
+- Energy recovery systems
+- Cleaner production technologies
+- Environmental management systems

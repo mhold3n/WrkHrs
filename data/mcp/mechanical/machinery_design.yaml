@@ -1,0 +1,239 @@
+gears:
+  spur_gears:
+    description: "Parallel shaft gears with straight teeth"
+    advantages: ["simple manufacturing", "high efficiency", "cost effective"]
+    disadvantages: ["noise at high speeds", "axial thrust"]
+    design_parameters:
+      pressure_angle: [14.5, 20, 25]  # degrees
+      diametral_pitch: "teeth per inch of pitch diameter"
+      gear_ratio: "N2/N1 = D2/D1"
+      center_distance: "(D1 + D2)/2"
+    applications: ["gearboxes", "clocks", "simple speed reduction"]
+    
+  helical_gears:
+    description: "Parallel shaft gears with angled teeth"
+    advantages: ["smoother operation", "higher load capacity", "quieter"]
+    disadvantages: ["axial thrust", "more complex manufacturing"]
+    design_parameters:
+      helix_angle: "15-45 degrees typical"
+      normal_pressure_angle: "20 degrees standard"
+      axial_thrust: "function of helix angle and transmitted torque"
+    applications: ["automotive transmissions", "industrial gearboxes", "high-speed applications"]
+
+  bevel_gears:
+    description: "Intersecting shaft gears, typically 90 degrees"
+    types: ["straight bevel", "spiral bevel", "zerol bevel"]
+    advantages: ["transmit power between intersecting shafts", "compact design"]
+    disadvantages: ["complex manufacturing", "precise alignment required"]
+    applications: ["differential gears", "angle drives", "hand tools"]
+
+  worm_gears:
+    description: "High ratio reduction gears, non-intersecting shafts"
+    advantages: ["high reduction ratios", "self-locking capability", "smooth operation"]
+    disadvantages: ["lower efficiency", "heat generation", "limited speed"]
+    efficiency: "50-90% depending on design and lubrication"
+    applications: ["elevators", "conveyor drives", "precision positioning"]
+
+power_transmission:
+  belts:
+    v_belts:
+      description: "Trapezoidal cross-section belts for power transmission"
+      advantages: ["slip protection", "shock absorption", "quiet operation"]
+      power_rating: "depends on belt speed and tension"
+      service_factors: 
+        normal_duty: 1.0
+        heavy_duty: 1.3
+        severe_duty: 1.5
+      applications: ["HVAC systems", "industrial machinery", "automotive"]
+    
+    timing_belts:
+      description: "Toothed belts for positive drive without slip"
+      advantages: ["no slip", "precise timing", "high efficiency"]
+      disadvantages: ["requires precise alignment", "periodic replacement"]
+      applications: ["engine timing", "robotic systems", "precision machinery"]
+    
+    flat_belts:
+      description: "Simple flat belts for light duty applications"
+      advantages: ["simple installation", "low cost", "flexibility"]
+      applications: ["light machinery", "conveyor systems", "legacy equipment"]
+
+  chains:
+    roller_chains:
+      description: "Articulated chains with rollers for power transmission"
+      advantages: ["positive drive", "high efficiency", "handles misalignment"]
+      disadvantages: ["requires lubrication", "noise", "periodic maintenance"]
+      standard_pitches: [0.25, 0.375, 0.5, 0.625, 0.75, 1.0, 1.25, 1.5, 2.0]  # inches
+      applications: ["bicycles", "motorcycles", "industrial drives"]
+    
+    silent_chains:
+      description: "Inverted tooth chains for quiet operation"
+      advantages: ["quieter than roller chains", "higher speed capability"]
+      applications: ["automotive timing", "high-speed machinery"]
+
+fasteners:
+  bolts:
+    grades:
+      grade_2: 
+        material: "low carbon steel"
+        tensile_strength: 74000  # psi
+        yield_strength: 57000   # psi
+        applications: ["general purpose", "low stress"]
+      
+      grade_5:
+        material: "medium carbon steel, quenched and tempered"
+        tensile_strength: 120000  # psi
+        yield_strength: 92000    # psi
+        applications: ["automotive", "machinery"]
+      
+      grade_8:
+        material: "medium carbon alloy steel, quenched and tempered"
+        tensile_strength: 150000  # psi
+        yield_strength: 130000   # psi
+        applications: ["high stress", "critical applications"]
+    
+    preload_calculation:
+      formula: "F_preload = K * F_proof"
+      typical_k_values:
+        reused_connections: 0.75
+        permanent_connections: 0.90
+      torque_calculation: "T = K_f * D * F_preload"
+      typical_k_factors: [0.15, 0.20, 0.25]  # depends on lubrication and surface finish
+
+springs:
+  compression_springs:
+    description: "Helical springs loaded in compression"
+    design_parameters:
+      spring_rate: "k = Gd⁴/(8D³n)"
+      stress: "τ = 8FD/(πd³) * K_w"
+      deflection: "δ = 8FD³n/(Gd⁴)"
+      surge_frequency: "f_s = (1/2) * √(G/ρ) / (πDn)"
+    materials: ["music wire", "oil-tempered wire", "stainless steel", "Inconel"]
+    applications: ["valve springs", "suspension systems", "mechanical devices"]
+  
+  extension_springs:
+    description: "Helical springs loaded in tension"
+    design_considerations: ["initial tension", "hook stress", "spring rate"]
+    end_configurations: ["machine hooks", "crossover hooks", "special ends"]
+    applications: ["garage doors", "trampolines", "mechanical linkages"]
+  
+  torsion_springs:
+    description: "Helical springs loaded in torsion"
+    stress_formula: "σ = 32M/(πd³) * K_b"
+    deflection_formula: "θ = 64MR/(Ed⁴)"
+    applications: ["clothespins", "mouse traps", "counterbalance mechanisms"]
+
+lubrication:
+  types:
+    boundary_lubrication:
+      description: "Thin film lubrication at start-up or heavy loads"
+      thickness: "molecular level"
+      friction_coefficient: "0.08-0.15"
+      applications: ["engine start-up", "heavily loaded gears"]
+    
+    mixed_lubrication:
+      description: "Transition between boundary and hydrodynamic"
+      characteristics: ["partial fluid film", "some surface contact"]
+      friction_coefficient: "0.004-0.08"
+    
+    hydrodynamic_lubrication:
+      description: "Full fluid film separation of surfaces"
+      thickness: "much greater than surface roughness"
+      friction_coefficient: "0.001-0.004"
+      applications: ["journal bearings", "high-speed machinery"]
+  
+  lubricant_properties:
+    viscosity:
+      definition: "resistance to flow"
+      units: ["centistokes (cSt)", "Saybolt Universal Seconds (SUS)"]
+      temperature_effect: "decreases exponentially with temperature"
+      viscosity_index: "measure of viscosity change with temperature"
+    
+    additives:
+      anti_oxidants: "prevent oil degradation"
+      anti_wear: "protect surfaces under boundary lubrication"
+      extreme_pressure: "protect against metal-to-metal contact"
+      detergents: "keep surfaces clean"
+      dispersants: "keep contaminants suspended"
+
+materials:
+  steel_grades:
+    carbon_steels:
+      1018:
+        carbon_content: 0.18
+        yield_strength: 54000  # psi
+        tensile_strength: 64000  # psi
+        applications: ["general construction", "low stress components"]
+      
+      1045:
+        carbon_content: 0.45
+        yield_strength: 77000  # psi
+        tensile_strength: 91000  # psi
+        applications: ["medium stress", "heat treatable"]
+    
+    alloy_steels:
+      4140:
+        composition: "Cr-Mo steel"
+        yield_strength: 95000  # psi (annealed)
+        tensile_strength: 148000  # psi (quenched and tempered)
+        applications: ["high strength applications", "aerospace"]
+      
+      4340:
+        composition: "Ni-Cr-Mo steel"
+        yield_strength: 145000  # psi (heat treated)
+        tensile_strength: 185000  # psi
+        applications: ["critical components", "landing gear"]
+
+manufacturing_processes:
+  machining:
+    turning:
+      description: "Material removal using single-point cutting tool"
+      parameters: ["cutting speed", "feed rate", "depth of cut"]
+      typical_tolerances: "±0.005 inches"
+      surface_finish: "32-125 Ra microinches"
+      applications: ["shafts", "cylinders", "precision parts"]
+    
+    milling:
+      description: "Material removal using multi-tooth cutting tool"
+      types: ["face milling", "end milling", "slot milling"]
+      typical_tolerances: "±0.003 inches"
+      surface_finish: "63-250 Ra microinches"
+      applications: ["flat surfaces", "complex shapes", "keyways"]
+    
+    grinding:
+      description: "Precision material removal using abrasive wheel"
+      typical_tolerances: "±0.0002 inches"
+      surface_finish: "4-32 Ra microinches"
+      applications: ["precision surfaces", "hardened materials", "tight tolerances"]
+
+  heat_treatment:
+    annealing:
+      purpose: "stress relief and improve machinability"
+      process: "heat to transformation temperature, slow cool"
+      result: "maximum softness and ductility"
+    
+    hardening:
+      purpose: "increase hardness and strength"
+      process: "heat to austenitizing temperature, rapid cool"
+      result: "high hardness but brittle"
+    
+    tempering:
+      purpose: "reduce brittleness after hardening"
+      process: "reheat hardened steel to moderate temperature"
+      result: "balance of hardness and toughness"
+
+safety_factors:
+  static_loading:
+    ductile_materials: 2.0
+    brittle_materials: 4.0
+    repeated_loading: 6.0
+  
+  fatigue_loading:
+    finite_life: 4.0
+    infinite_life: 2.0
+  
+  factors_affecting_safety:
+    - "uncertainty in loading"
+    - "material property variation"
+    - "manufacturing tolerances"
+    - "environmental conditions"
+    - "consequences of failure"

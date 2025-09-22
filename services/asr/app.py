@@ -3,9 +3,14 @@ import json
 import logging
 import tempfile
 import subprocess
+import base64
+import requests
+import mimetypes
+import asyncio
 from typing import Dict, List, Optional, Any, Union
 from datetime import datetime, timedelta
 from pathlib import Path
+from urllib.parse import urlparse
 import hashlib
 
 from fastapi import FastAPI, HTTPException, UploadFile, File, Form
@@ -157,6 +162,137 @@ class ASRService:
         except Exception as e:
             logger.warning(f"Error getting audio duration: {e}")
             return 0.0
+
+    async def download_audio_from_url(self, url: str) -> str:
+        """Download audio file from URL and return temporary file path"""
+        try:
+            # Validate URL
+            parsed_url = urlparse(url)
+            if not parsed_url.scheme or not parsed_url.netloc:
+                raise ValueError("Invalid URL format")
+            
+            # Set headers to mimic a browser request
+            headers = {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+            }
+            
+            # Download with timeout and size limits
+            logger.info(f"Downloading audio from URL: {url}")
+            response = requests.get(url, headers=headers, timeout=30, stream=True)
+            response.raise_for_status()
+            
+            # Check content type
+            content_type = response.headers.get('content-type', '').lower()
+            logger.info(f"Content type: {content_type}")
+            
+            # Determine file extension
+            extension = None
+            if 'audio' in content_type:
+                if 'mp3' in content_type:
+                    extension = '.mp3'
+                elif 'wav' in content_type:
+                    extension = '.wav'
+                elif 'ogg' in content_type:
+                    extension = '.ogg'
+                elif 'flac' in content_type:
+                    extension = '.flac'
+                elif 'm4a' in content_type:
+                    extension = '.m4a'
+            elif 'video' in content_type:
+                if 'mp4' in content_type:
+                    extension = '.mp4'
+                elif 'webm' in content_type:
+                    extension = '.webm'
+                elif 'avi' in content_type:
+                    extension = '.avi'
+            
+            # If we can't determine from content-type, try from URL
+            if not extension:
+                url_path = Path(parsed_url.path)
+                if url_path.suffix.lower() in ['.mp3', '.wav', '.ogg', '.flac', '.m4a', '.mp4', '.webm', '.avi', '.mov', '.mkv']:
+                    extension = url_path.suffix.lower()
+                else:
+                    extension = '.mp3'  # Default fallback
+            
+            # Create temporary file
+            temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=extension)
+            
+            # Download with size limit (100MB max)
+            total_size = 0
+            max_size = 100 * 1024 * 1024  # 100MB
+            
+            for chunk in response.iter_content(chunk_size=8192):
+                total_size += len(chunk)
+                if total_size > max_size:
+                    temp_file.close()
+                    os.unlink(temp_file.name)
+                    raise ValueError(f"File too large: {total_size} bytes (max: {max_size})")
+                temp_file.write(chunk)
+            
+            temp_file.close()
+            logger.info(f"Downloaded {total_size} bytes to {temp_file.name}")
+            
+            return temp_file.name
+            
+        except requests.exceptions.RequestException as e:
+            logger.error(f"Network error downloading audio: {e}")
+            raise HTTPException(status_code=400, detail=f"Failed to download audio: {str(e)}")
+        except Exception as e:
+            logger.error(f"Error downloading audio from URL: {e}")
+            raise HTTPException(status_code=400, detail=f"Failed to download audio: {str(e)}")
+    
+    def decode_base64_audio(self, base64_data: str, format_hint: str = "mp3") -> str:
+        """Decode base64 audio data and return temporary file path"""
+        try:
+            # Remove data URL prefix if present (e.g., "data:audio/mp3;base64,")
+            if ',' in base64_data and base64_data.startswith('data:'):
+                header, base64_data = base64_data.split(',', 1)
+                # Extract format from header if present
+                if 'audio/' in header:
+                    format_start = header.find('audio/') + 6
+                    format_end = header.find(';', format_start)
+                    if format_end == -1:
+                        format_end = len(header)
+                    format_hint = header[format_start:format_end]
+            
+            # Decode base64 data
+            try:
+                audio_bytes = base64.b64decode(base64_data, validate=True)
+            except Exception as e:
+                raise ValueError(f"Invalid base64 data: {str(e)}")
+            
+            # Determine file extension
+            extension_map = {
+                'mp3': '.mp3',
+                'mpeg': '.mp3',
+                'wav': '.wav',
+                'wave': '.wav',
+                'ogg': '.ogg',
+                'flac': '.flac',
+                'm4a': '.m4a',
+                'aac': '.aac',
+                'webm': '.webm'
+            }
+            
+            extension = extension_map.get(format_hint.lower(), '.mp3')
+            
+            # Create temporary file
+            temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=extension)
+            temp_file.write(audio_bytes)
+            temp_file.close()
+            
+            logger.info(f"Decoded {len(audio_bytes)} bytes of base64 audio to {temp_file.name}")
+            
+            # Validate that the file is actually audio
+            if len(audio_bytes) < 100:  # Too small to be valid audio
+                os.unlink(temp_file.name)
+                raise ValueError("Decoded data is too small to be valid audio")
+            
+            return temp_file.name
+            
+        except Exception as e:
+            logger.error(f"Error decoding base64 audio: {e}")
+            raise HTTPException(status_code=400, detail=f"Failed to decode base64 audio: {str(e)}")
     
     def calculate_technical_score(self, text: str) -> float:
         """Calculate technical relevance score for text segment"""
@@ -395,20 +531,75 @@ async def transcribe_request(request: TranscriptionRequest):
     if not request.audio_url and not request.audio_data:
         raise HTTPException(status_code=400, detail="Either audio_url or audio_data must be provided")
     
+    temp_file_path = None
+    audio_file_path = None
+    
     try:
-        # For now, return a placeholder for URL/base64 processing
-        # This would require additional implementation for URL downloading and base64 decoding
+        # Handle URL download
         if request.audio_url:
-            raise HTTPException(status_code=501, detail="URL transcription not yet implemented")
+            logger.info(f"Processing audio URL: {request.audio_url}")
+            temp_file_path = await asr_service.download_audio_from_url(request.audio_url)
+            audio_file_path = temp_file_path
         
-        if request.audio_data:
-            raise HTTPException(status_code=501, detail="Base64 audio data transcription not yet implemented")
+        # Handle base64 data
+        elif request.audio_data:
+            logger.info("Processing base64 audio data")
+            temp_file_path = asr_service.decode_base64_audio(request.audio_data)
+            audio_file_path = temp_file_path
+        
+        # Check if we need to extract audio from video
+        file_extension = Path(audio_file_path).suffix.lower()
+        if file_extension in ['.mp4', '.avi', '.mov', '.mkv', '.webm']:
+            audio_temp_file = tempfile.NamedTemporaryFile(delete=False, suffix='.wav')
+            extracted_audio_path = audio_temp_file.name
+            audio_temp_file.close()
             
+            success = asr_service.extract_audio_from_video(audio_file_path, extracted_audio_path)
+            if not success:
+                raise HTTPException(status_code=400, detail="Failed to extract audio from video")
+            
+            # Clean up original file and use extracted audio
+            if temp_file_path and temp_file_path != audio_file_path:
+                try:
+                    os.unlink(temp_file_path)
+                except:
+                    pass
+            if audio_file_path != extracted_audio_path:
+                try:
+                    os.unlink(audio_file_path)
+                except:
+                    pass
+            
+            audio_file_path = extracted_audio_path
+            temp_file_path = extracted_audio_path
+        
+        # Transcribe the audio
+        result = await asr_service.transcribe_audio(
+            audio_file_path, 
+            request.language, 
+            request.extract_technical
+        )
+        
+        return result
+        
     except HTTPException:
         raise
     except Exception as e:
         logger.error(f"Transcription request error: {e}")
         raise HTTPException(status_code=500, detail=f"Transcription failed: {str(e)}")
+    
+    finally:
+        # Clean up temporary files
+        if temp_file_path:
+            try:
+                os.unlink(temp_file_path)
+            except:
+                pass
+        if audio_file_path and audio_file_path != temp_file_path:
+            try:
+                os.unlink(audio_file_path)
+            except:
+                pass
 
 @api.get("/technical/keywords")
 async def get_technical_keywords():

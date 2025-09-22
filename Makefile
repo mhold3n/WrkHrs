@@ -27,17 +27,23 @@ help: ## Show this help message
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "  $(YELLOW)%-20s$(NC) %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 	@echo ""
 	@echo "$(GREEN)Environment files:$(NC)"
-	@echo "  Create $(YELLOW).env$(NC) from $(YELLOW).env.example$(NC) before running"
+	@echo "  Create $(YELLOW).env$(NC) from $(YELLOW)env.example$(NC) before running"
 
-setup: ## Initial setup - create .env file
+setup: ## Initial setup - create .env file and initialize volumes
 	@if [ ! -f $(ENV_FILE) ]; then \
 		echo "$(YELLOW)Creating .env file from template...$(NC)"; \
-		cp .env.example $(ENV_FILE); \
+		cp env.example $(ENV_FILE); \
 		echo "$(GREEN)✓ .env file created$(NC)"; \
 		echo "$(YELLOW)Please review and modify .env as needed$(NC)"; \
 	else \
 		echo "$(GREEN)✓ .env file already exists$(NC)"; \
 	fi
+	@echo "$(BLUE)Initializing data volumes...$(NC)"
+	@./scripts/init-volumes.sh
+
+init-volumes: ## Initialize data directories for Docker volumes
+	@echo "$(BLUE)Initializing data volumes...$(NC)"
+	@./scripts/init-volumes.sh
 
 # Build targets
 build: setup ## Build all services for current environment
@@ -189,6 +195,51 @@ test-chat: ## Test chat endpoint
 		-d '{"messages":[{"role":"user","content":"What is the strength of steel?"}],"model":"test","temperature":0.7}' \
 		| jq .
 
+test-llm: ## Test LLM backend integration (Ollama/vLLM)
+	@echo "$(BLUE)Testing LLM backends...$(NC)"
+	@cd $(PWD) && python3 scripts/test-llm-backends.py
+
+test-llm-quick: ## Quick LLM backend health check
+	@echo "$(BLUE)Quick LLM health check...$(NC)"
+	@echo "Testing Ollama..."
+	@if curl -s -f http://localhost:11434/api/tags > /dev/null 2>&1; then \
+		echo "$(GREEN)✓ Ollama$(NC) - accessible"; \
+		curl -s http://localhost:11434/api/tags | jq -r '.models[].name' | head -3 || echo "No models found"; \
+	else \
+		echo "$(RED)✗ Ollama$(NC) - not accessible"; \
+	fi
+	@echo "Testing Orchestrator LLM endpoints..."
+	@if curl -s -f http://localhost:8081/llm/info > /dev/null 2>&1; then \
+		echo "$(GREEN)✓ Orchestrator LLM$(NC) - accessible"; \
+		curl -s http://localhost:8081/llm/info | jq -r '.backend_info.type' || echo "Could not get backend info"; \
+	else \
+		echo "$(RED)✗ Orchestrator LLM$(NC) - not accessible"; \
+	fi
+
+test-asr: ## Test ASR enhancements (URL and base64 transcription)
+	@echo "$(BLUE)Testing ASR enhancements...$(NC)"
+	@cd $(PWD) && python3 scripts/test-asr-enhancements.py
+
+test-asr-quick: ## Quick ASR health and functionality check
+	@echo "$(BLUE)Quick ASR check...$(NC)"
+	@echo "Testing ASR health..."
+	@if curl -s -f http://localhost:8084/health > /dev/null 2>&1; then \
+		echo "$(GREEN)✓ ASR Service$(NC) - accessible"; \
+		curl -s http://localhost:8084/health | jq -r '.model_loaded // "unknown"' | xargs -I {} echo "   Model loaded: {}"; \
+	else \
+		echo "$(RED)✗ ASR Service$(NC) - not accessible"; \
+	fi
+	@echo "Testing technical keywords..."
+	@curl -s http://localhost:8084/technical/keywords | jq -r '.total_keywords // "unknown"' | xargs -I {} echo "   Technical keywords: {}"
+
+demo-asr: ## Demonstrate ASR capabilities
+	@echo "$(BLUE)ASR Demonstration$(NC)"
+	@echo "=================="
+	@echo "$(YELLOW)Technical Analysis Test:$(NC)"
+	@curl -s -X POST "http://localhost:8084/technical/analyze?text=The steel beam has a yield strength of 250 MPa" | jq .
+	@echo "\n$(YELLOW)Available Technical Keywords:$(NC)"
+	@curl -s http://localhost:8084/technical/keywords | jq '.categories | keys'
+
 # Data management
 init-data: ## Initialize with sample data
 	@echo "$(BLUE)Initializing sample data...$(NC)"
@@ -198,6 +249,31 @@ init-data: ## Initialize with sample data
 		-d '{"content":"Steel is a metallic alloy composed primarily of iron and carbon. It has high tensile strength and is widely used in construction and manufacturing.","domain":"materials","source":"sample"}' \
 		| jq .
 	@echo "$(GREEN)✓ Sample data added$(NC)"
+
+test-mcp-data: ## Test MCP domain data loading
+	@echo "$(BLUE)Testing MCP domain data...$(NC)"
+	@echo "Testing Chemistry domain:"
+	@curl -s http://localhost:8085/chemistry/query?q=glucose | jq '.results[0].title // "No results"'
+	@echo "Testing Mechanical domain:"
+	@curl -s http://localhost:8085/mechanical/query?q=beam | jq '.results[0].title // "No results"'
+	@echo "Testing Materials domain:"
+	@curl -s http://localhost:8085/materials/query?q=steel | jq '.results[0].title // "No results"'
+
+demo-mcp: ## Demonstrate MCP capabilities
+	@echo "$(BLUE)MCP Domain Demonstration$(NC)"
+	@echo "========================="
+	@echo "$(YELLOW)Chemistry Domain - Molecular Weight Calculation:$(NC)"
+	@curl -s -X POST http://localhost:8085/chemistry/molecular_weight \
+		-H "Content-Type: application/json" \
+		-d '{"formula": "C6H12O6"}' | jq .
+	@echo "\n$(YELLOW)Mechanical Domain - Beam Stress Calculation:$(NC)"
+	@curl -s -X POST http://localhost:8085/mechanical/beam_calculation \
+		-H "Content-Type: application/json" \
+		-d '{"beam_type": "simply_supported", "length": 3.0, "load": 1000, "moment_of_inertia": 8.33e-6, "elastic_modulus": 200e9}' | jq .
+	@echo "\n$(YELLOW)Materials Domain - Property Lookup:$(NC)"
+	@curl -s -X POST http://localhost:8085/materials/properties \
+		-H "Content-Type: application/json" \
+		-d '{"material": "steel"}' | jq .
 
 backup-data: ## Backup persistent data
 	@echo "$(BLUE)Creating data backup...$(NC)"
@@ -268,3 +344,24 @@ refresh-plugins: ## Refresh tool registry plugins
 list-plugins: ## List available plugins
 	@echo "$(BLUE)Available plugins:$(NC)"
 	curl -s http://localhost:8086/tools | jq '.tools[] | {name: .name, type: .type, description: .description}'
+
+test-plugins: ## Test plugin functionality
+	@echo "$(BLUE)Testing plugin examples...$(NC)"
+	@echo "Testing Calculator Plugin:"
+	@cd services/plugins && python3 calculator_plugin.py
+	@echo "\nTesting Chemistry Toolkit:"
+	@cd services/plugins && python3 chemistry_toolkit_plugin.py
+	@echo "\nTesting Materials Analysis:"
+	@cd services/plugins && python3 materials_analysis_plugin.py
+	@echo "\nTesting Web API Integration:"
+	@cd services/plugins && python3 web_api_plugin.py
+
+demo-plugins: ## Demo all plugin capabilities
+	@echo "$(BLUE)Plugin Demonstration$(NC)"
+	@echo "===================="
+	@echo "$(YELLOW)1. Chemistry Toolkit Plugin$(NC)"
+	@cd services/plugins && python3 -c "from chemistry_toolkit_plugin import plugin_instance; import json; print(json.dumps(plugin_instance.execute_tool('parse_formula', {'formula': 'C6H12O6'}), indent=2))"
+	@echo "\n$(YELLOW)2. Materials Analysis Plugin$(NC)"
+	@cd services/plugins && python3 -c "from materials_analysis_plugin import plugin_instance; import json; print(json.dumps(plugin_instance.execute_tool('safety_factor', {'applied_stress': 200e6, 'material_strength': 400e6}), indent=2))"
+	@echo "\n$(YELLOW)3. Unit Converter Plugin$(NC)"
+	@cd services/plugins && python3 -c "from unit_converter_plugin import plugin_instance; import json; print(json.dumps(plugin_instance.execute_tool('convert', {'value': 100, 'from_unit': 'm', 'to_unit': 'ft', 'unit_type': 'length'}), indent=2))"

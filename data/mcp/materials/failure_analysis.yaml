@@ -1,0 +1,388 @@
+failure_modes:
+  mechanical_failures:
+    brittle_fracture:
+      description: "Sudden failure with little plastic deformation"
+      characteristics:
+        - "flat fracture surface"
+        - "little energy absorption"
+        - "crack propagation perpendicular to stress"
+        - "cleavage planes visible"
+      
+      causes:
+        - "low temperature operation"
+        - "high strain rate loading"
+        - "stress concentrations"
+        - "material embrittlement"
+        - "hydrogen embrittlement"
+      
+      materials_susceptible:
+        - "high carbon steels"
+        - "cast iron"
+        - "ceramics"
+        - "some aluminum alloys at low temperature"
+      
+      prevention:
+        - "material selection for service temperature"
+        - "stress relief heat treatment"
+        - "eliminate sharp corners"
+        - "control hydrogen exposure"
+
+    ductile_fracture:
+      description: "Failure preceded by significant plastic deformation"
+      characteristics:
+        - "cup and cone fracture surface"
+        - "dimpled fracture surface"
+        - "high energy absorption"
+        - "necking before failure"
+      
+      mechanism:
+        - "void nucleation at inclusions"
+        - "void growth under stress"
+        - "void coalescence"
+        - "final shear fracture"
+      
+      materials_typical:
+        - "low carbon steels"
+        - "aluminum alloys"
+        - "copper alloys"
+        - "most ductile metals"
+
+    fatigue_failure:
+      description: "Progressive crack growth under cyclic loading"
+      stages:
+        crack_initiation:
+          location: "stress concentrations, surface defects"
+          duration: "major portion of fatigue life"
+          factors: ["surface finish", "residual stress", "environment"]
+        
+        crack_propagation:
+          characteristics: "beach marks or striations"
+          rate: "function of stress intensity range"
+          equation: "da/dN = C(ΔK)^m"
+        
+        final_fracture:
+          appearance: "sudden overload fracture"
+          size: "when remaining area cannot support load"
+      
+      factors_affecting_life:
+        - "stress amplitude"
+        - "mean stress level"
+        - "surface condition"
+        - "material microstructure"
+        - "environmental conditions"
+        - "frequency effects"
+      
+      improvement_methods:
+        - "shot peening for compressive residual stress"
+        - "surface grinding to remove defects"
+        - "design to minimize stress concentrations"
+        - "material selection for fatigue resistance"
+
+    creep_failure:
+      description: "Time-dependent deformation under constant load"
+      temperature_dependence: "significant above 0.4 * T_melting"
+      
+      stages:
+        primary_creep:
+          description: "decreasing strain rate"
+          duration: "initial period"
+          mechanism: "work hardening dominates"
+        
+        secondary_creep:
+          description: "steady-state strain rate"
+          duration: "major portion of life"
+          mechanism: "balance of hardening and recovery"
+        
+        tertiary_creep:
+          description: "accelerating strain rate"
+          termination: "creep rupture"
+          mechanism: "damage accumulation"
+      
+      design_considerations:
+        - "stress limitation below creep strength"
+        - "temperature control"
+        - "material selection for high temperature service"
+        - "allowable deformation limits"
+
+  corrosion_failures:
+    uniform_corrosion:
+      description: "Even material loss over exposed surface"
+      rate_factors:
+        - "temperature"
+        - "pH level"
+        - "oxygen concentration"
+        - "fluid velocity"
+      
+      materials_resistant:
+        - "stainless steels in appropriate environments"
+        - "aluminum alloys in neutral pH"
+        - "titanium alloys"
+        - "noble metals"
+      
+      protection_methods:
+        - "material selection"
+        - "protective coatings"
+        - "cathodic protection"
+        - "corrosion inhibitors"
+
+    galvanic_corrosion:
+      description: "Accelerated corrosion due to dissimilar metals"
+      requirements:
+        - "dissimilar metals in contact"
+        - "conductive electrolyte"
+        - "electrical connection"
+      
+      galvanic_series_seawater:
+        most_noble: ["platinum", "gold", "titanium", "stainless steel 316"]
+        intermediate: ["copper", "brass", "aluminum bronze", "carbon steel"]
+        most_active: ["aluminum alloys", "zinc", "magnesium"]
+      
+      prevention:
+        - "select metals close in galvanic series"
+        - "use insulating materials between dissimilar metals"
+        - "apply protective coatings"
+        - "cathodic protection"
+
+    pitting_corrosion:
+      description: "Localized attack resulting in small holes"
+      susceptible_materials:
+        - "stainless steels in chloride environments"
+        - "aluminum alloys"
+        - "carbon steels under deposits"
+      
+      initiation_factors:
+        - "chloride ions"
+        - "surface damage"
+        - "inclusions or second phases"
+        - "crevices or deposits"
+      
+      pitting_resistance:
+        equation: "PREN = %Cr + 3.3*%Mo + 16*%N"
+        interpretation: "higher values indicate better resistance"
+
+    stress_corrosion_cracking:
+      description: "Cracking due to combined stress and corrosive environment"
+      requirements:
+        - "tensile stress (applied or residual)"
+        - "susceptible material"
+        - "specific corrosive environment"
+      
+      common_combinations:
+        - "austenitic stainless steel + chlorides"
+        - "brass + ammonia"
+        - "carbon steel + caustic solutions"
+        - "aluminum alloys + seawater"
+      
+      prevention:
+        - "stress relief heat treatment"
+        - "material selection"
+        - "environmental control"
+        - "cathodic protection"
+
+testing_methods:
+  mechanical_testing:
+    tensile_test:
+      standard: "ASTM E8"
+      specimen_types: ["round", "flat", "sheet"]
+      measurements:
+        yield_strength: "0.2% offset method"
+        ultimate_strength: "maximum load divided by original area"
+        elongation: "percent increase in gauge length"
+        reduction_in_area: "percent decrease in cross-sectional area"
+      
+      test_conditions:
+        strain_rate: "typical 0.05-8.3 × 10^-3 s^-1"
+        temperature: "room temperature unless specified"
+        atmosphere: "air unless otherwise noted"
+
+    hardness_testing:
+      brinell:
+        indenter: "hardened steel or carbide ball"
+        load: "500-3000 kg"
+        application: "soft to medium hard materials"
+        formula: "HB = 2P/(πD(D-√(D²-d²)))"
+      
+      rockwell:
+        scales:
+          B_scale: "1/16 inch ball, 100 kg load"
+          C_scale: "diamond cone, 150 kg load"
+        advantages: ["quick test", "small indentation", "direct reading"]
+      
+      vickers:
+        indenter: "diamond pyramid"
+        loads: "1-120 kg"
+        formula: "HV = 1.854P/d²"
+        advantages: ["one scale for all materials", "small indentation"]
+
+    impact_testing:
+      charpy_test:
+        specimen: "notched bar"
+        support_span: "40 mm"
+        pendulum_energy: "typically 300 J"
+        measurement: "energy absorbed in fracture"
+        temperature_effects: "ductile-brittle transition"
+      
+      izod_test:
+        specimen: "cantilever beam"
+        notch_location: "at base of specimen"
+        similar_information: "to Charpy test"
+
+    fatigue_testing:
+      rotating_beam:
+        loading: "pure bending"
+        stress_ratio: "R = -1 (fully reversed)"
+        typical_frequency: "1500-3600 rpm"
+        endurance_limit: "stress for 10^7 cycles"
+      
+      axial_loading:
+        loading: "tension-compression or tension-tension"
+        stress_ratios: "R = 0 (tension-tension), R = -1 (fully reversed)"
+        frequency: "typically 5-200 Hz"
+      
+      s_n_curve:
+        x_axis: "cycles to failure (log scale)"
+        y_axis: "stress amplitude"
+        regions: ["low cycle (<10³)", "high cycle (>10⁶)", "infinite life (>10⁷)"]
+
+  non_destructive_testing:
+    visual_inspection:
+      applications: ["surface defects", "weld quality", "dimensional check"]
+      equipment: ["magnifying glass", "borescope", "measurement tools"]
+      limitations: ["surface defects only", "inspector skill dependent"]
+    
+    liquid_penetrant:
+      process:
+        - "apply penetrant"
+        - "remove excess penetrant"
+        - "apply developer"
+        - "inspect under appropriate lighting"
+      
+      types:
+        visible_dye: "white light inspection"
+        fluorescent: "UV light inspection"
+      
+      advantages: ["simple process", "inexpensive", "high sensitivity"]
+      limitations: ["surface defects only", "porous materials difficult"]
+
+    magnetic_particle:
+      principle: "magnetic flux leakage at defects"
+      materials: "ferromagnetic only"
+      magnetization_methods: ["circular", "longitudinal"]
+      particle_types: ["dry powder", "wet suspension"]
+      advantages: ["fast", "sensitive to surface and near-surface defects"]
+
+    ultrasonic_testing:
+      principle: "sound wave reflection from discontinuities"
+      frequency_range: "0.5-25 MHz"
+      wave_types: ["longitudinal", "shear", "surface", "lamb"]
+      techniques: ["pulse-echo", "through-transmission", "time-of-flight"]
+      advantages: ["penetrates thick sections", "accurate depth information"]
+
+    radiographic_testing:
+      radiation_sources: ["X-ray", "gamma ray (Co-60, Ir-192)"]
+      recording_media: ["film", "digital detectors"]
+      image_quality: "determined by contrast and definition"
+      advantages: ["permanent record", "volumetric inspection"]
+      limitations: ["radiation safety", "orientation dependent"]
+
+    eddy_current:
+      principle: "electromagnetic induction"
+      materials: "electrically conductive"
+      applications: ["surface defects", "coating thickness", "conductivity"]
+      advantages: ["no coupling required", "fast scanning"]
+      limitations: ["limited penetration depth", "skill dependent"]
+
+fractography:
+  macroscopic_features:
+    beach_marks:
+      description: "concentric ridges on fatigue fracture surface"
+      formation: "changes in loading conditions"
+      significance: "indicate crack growth direction"
+    
+    chevron_marks:
+      description: "V-shaped markings pointing to crack origin"
+      occurrence: "brittle fractures"
+      use: "locate fracture initiation site"
+    
+    shear_lips:
+      description: "45° angled surfaces at fracture edges"
+      occurrence: "ductile fractures"
+      significance: "final shear fracture region"
+
+  microscopic_features:
+    dimples:
+      description: "cup-shaped depressions"
+      formation: "void coalescence in ductile fracture"
+      types: ["equiaxed (tension)", "elongated (shear)"]
+    
+    cleavage:
+      description: "flat crystallographic surfaces"
+      occurrence: "brittle fracture"
+      characteristics: ["river patterns", "tongues", "feather markings"]
+    
+    striations:
+      description: "parallel ridges on fatigue fracture"
+      formation: "one striation per load cycle"
+      visibility: "electron microscopy typically required"
+
+failure_analysis_procedure:
+  initial_assessment:
+    - "collect background information"
+    - "document as-found condition"
+    - "photograph fracture surfaces"
+    - "preserve evidence"
+  
+  visual_examination:
+    - "identify fracture origin"
+    - "determine crack propagation direction"
+    - "assess overall fracture appearance"
+    - "note any unusual features"
+  
+  material_verification:
+    - "chemical composition analysis"
+    - "mechanical property testing"
+    - "microstructure examination"
+    - "heat treatment verification"
+  
+  stress_analysis:
+    - "calculate applied stresses"
+    - "identify stress concentrations"
+    - "consider residual stresses"
+    - "evaluate loading conditions"
+  
+  fractographic_analysis:
+    - "stereomicroscopy examination"
+    - "scanning electron microscopy"
+    - "identify fracture mechanisms"
+    - "locate initiation sites"
+  
+  root_cause_determination:
+    - "correlate all findings"
+    - "eliminate alternative causes"
+    - "determine primary failure mode"
+    - "identify contributing factors"
+
+prevention_strategies:
+  design_improvements:
+    - "eliminate stress concentrations"
+    - "provide adequate safety factors"
+    - "consider environmental effects"
+    - "design for inspectability"
+  
+  material_selection:
+    - "match properties to service conditions"
+    - "consider environmental compatibility"
+    - "evaluate cost-benefit trade-offs"
+    - "specify appropriate grades"
+  
+  manufacturing_controls:
+    - "establish quality procedures"
+    - "control heat treatment"
+    - "minimize residual stresses"
+    - "inspect critical features"
+  
+  service_monitoring:
+    - "implement inspection programs"
+    - "monitor operating conditions"
+    - "track component performance"
+    - "plan preventive maintenance"

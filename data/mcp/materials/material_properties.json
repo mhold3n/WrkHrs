@@ -1,0 +1,323 @@
+[
+  {
+    "id": "steel_1018",
+    "title": "AISI 1018 Carbon Steel",
+    "content": "AISI 1018 is a low-carbon steel with good weldability and formability. It is commonly used for structural applications, shafts, and general machinery components. The material can be case hardened for improved surface properties while maintaining a tough core.",
+    "metadata": {
+      "classification": "carbon steel",
+      "composition": {
+        "carbon": 0.18,
+        "manganese": 0.73,
+        "phosphorus": 0.04,
+        "sulfur": 0.05
+      },
+      "mechanical_properties": {
+        "density": 7870,
+        "elastic_modulus": 200000000000,
+        "yield_strength": 370000000,
+        "ultimate_strength": 440000000,
+        "elongation": 15,
+        "hardness_hb": 126,
+        "poisson_ratio": 0.29
+      },
+      "thermal_properties": {
+        "thermal_conductivity": 51.9,
+        "thermal_expansion": 1.21e-5,
+        "specific_heat": 486,
+        "melting_point": 1811
+      },
+      "applications": ["structural components", "shafts", "gears", "fasteners"],
+      "manufacturing": ["hot rolling", "cold drawing", "machining", "welding"]
+    },
+    "tags": ["steel", "carbon steel", "structural", "weldable", "machinable"]
+  },
+  {
+    "id": "aluminum_6061",
+    "title": "Aluminum 6061-T6",
+    "content": "Aluminum 6061-T6 is a precipitation-hardened aluminum alloy with excellent strength-to-weight ratio, good corrosion resistance, and excellent machinability. The T6 temper provides peak strength through solution heat treatment and artificial aging.",
+    "metadata": {
+      "classification": "aluminum alloy",
+      "composition": {
+        "aluminum": 97.9,
+        "magnesium": 1.0,
+        "silicon": 0.6,
+        "copper": 0.3,
+        "chromium": 0.2
+      },
+      "mechanical_properties": {
+        "density": 2700,
+        "elastic_modulus": 68900000000,
+        "yield_strength": 276000000,
+        "ultimate_strength": 310000000,
+        "elongation": 12,
+        "hardness_hb": 95,
+        "poisson_ratio": 0.33
+      },
+      "thermal_properties": {
+        "thermal_conductivity": 167,
+        "thermal_expansion": 2.31e-5,
+        "specific_heat": 896,
+        "melting_point": 925
+      },
+      "applications": ["aerospace", "automotive", "marine", "structural", "heat sinks"],
+      "manufacturing": ["extrusion", "machining", "welding", "anodizing"]
+    },
+    "tags": ["aluminum", "lightweight", "corrosion resistant", "heat treatable", "aerospace"]
+  },
+  {
+    "id": "titanium_ti6al4v",
+    "title": "Titanium Ti-6Al-4V",
+    "content": "Ti-6Al-4V is the most widely used titanium alloy, offering excellent strength-to-weight ratio, outstanding corrosion resistance, and biocompatibility. It maintains its properties at elevated temperatures and is used in critical aerospace and medical applications.",
+    "metadata": {
+      "classification": "titanium alloy",
+      "composition": {
+        "titanium": 90,
+        "aluminum": 6,
+        "vanadium": 4
+      },
+      "mechanical_properties": {
+        "density": 4430,
+        "elastic_modulus": 113800000000,
+        "yield_strength": 880000000,
+        "ultimate_strength": 950000000,
+        "elongation": 14,
+        "hardness_hv": 334,
+        "poisson_ratio": 0.32
+      },
+      "thermal_properties": {
+        "thermal_conductivity": 6.7,
+        "thermal_expansion": 8.6e-6,
+        "specific_heat": 546,
+        "melting_point": 1878
+      },
+      "applications": ["aerospace", "medical implants", "chemical processing", "marine"],
+      "manufacturing": ["forging", "machining", "additive manufacturing", "welding"]
+    },
+    "tags": ["titanium", "biocompatible", "high temperature", "corrosion resistant", "aerospace"]
+  },
+  {
+    "id": "stainless_316l",
+    "title": "Stainless Steel 316L",
+    "content": "316L is an austenitic stainless steel with excellent corrosion resistance, particularly in chloride environments. The low carbon content reduces carbide precipitation, improving corrosion resistance and weldability. It is non-magnetic in the annealed condition.",
+    "metadata": {
+      "classification": "stainless steel",
+      "composition": {
+        "iron": 65,
+        "chromium": 17,
+        "nickel": 12,
+        "molybdenum": 2.5,
+        "carbon": 0.03
+      },
+      "mechanical_properties": {
+        "density": 8000,
+        "elastic_modulus": 200000000000,
+        "yield_strength": 290000000,
+        "ultimate_strength": 580000000,
+        "elongation": 40,
+        "hardness_hb": 217,
+        "poisson_ratio": 0.30
+      },
+      "thermal_properties": {
+        "thermal_conductivity": 16.2,
+        "thermal_expansion": 1.6e-5,
+        "specific_heat": 500,
+        "melting_point": 1673
+      },
+      "applications": ["chemical equipment", "food processing", "medical devices", "marine"],
+      "manufacturing": ["rolling", "forging", "welding", "deep drawing"]
+    },
+    "tags": ["stainless steel", "corrosion resistant", "austenitic", "food grade", "medical"]
+  },
+  {
+    "id": "carbon_fiber_composite",
+    "title": "Carbon Fiber Reinforced Polymer (CFRP)",
+    "content": "CFRP is a lightweight, high-strength composite material consisting of carbon fibers in a polymer matrix. It offers exceptional specific strength and stiffness, making it ideal for weight-critical applications. Properties are highly directional depending on fiber orientation.",
+    "metadata": {
+      "classification": "composite material",
+      "composition": {
+        "carbon_fiber": 60,
+        "epoxy_resin": 40
+      },
+      "mechanical_properties": {
+        "density": 1550,
+        "elastic_modulus_longitudinal": 150000000000,
+        "elastic_modulus_transverse": 10000000000,
+        "tensile_strength_longitudinal": 1500000000,
+        "tensile_strength_transverse": 50000000,
+        "poisson_ratio": 0.28
+      },
+      "thermal_properties": {
+        "thermal_conductivity_longitudinal": 7,
+        "thermal_conductivity_transverse": 0.8,
+        "thermal_expansion_longitudinal": -0.5e-6,
+        "thermal_expansion_transverse": 28e-6,
+        "glass_transition_temp": 393
+      },
+      "applications": ["aerospace", "automotive", "sports equipment", "wind turbines"],
+      "manufacturing": ["autoclave molding", "resin transfer molding", "hand layup", "pultrusion"]
+    },
+    "tags": ["composite", "carbon fiber", "lightweight", "high strength", "anisotropic"]
+  },
+  {
+    "id": "hdpe_plastic",
+    "title": "High-Density Polyethylene (HDPE)",
+    "content": "HDPE is a thermoplastic polymer with excellent chemical resistance, low moisture absorption, and good impact strength. It is recyclable and widely used for containers, pipes, and chemical-resistant applications. HDPE has a relatively low melting point and can be easily processed.",
+    "metadata": {
+      "classification": "thermoplastic",
+      "composition": {
+        "polyethylene": 100
+      },
+      "mechanical_properties": {
+        "density": 950,
+        "elastic_modulus": 1100000000,
+        "yield_strength": 26000000,
+        "ultimate_strength": 37000000,
+        "elongation": 300,
+        "hardness_shore_d": 66,
+        "poisson_ratio": 0.42
+      },
+      "thermal_properties": {
+        "thermal_conductivity": 0.5,
+        "thermal_expansion": 2e-4,
+        "specific_heat": 1900,
+        "melting_point": 403,
+        "glass_transition_temp": 148
+      },
+      "applications": ["containers", "pipes", "geomembranes", "cutting boards"],
+      "manufacturing": ["injection molding", "blow molding", "extrusion", "rotational molding"]
+    },
+    "tags": ["plastic", "thermoplastic", "chemical resistant", "recyclable", "food safe"]
+  },
+  {
+    "id": "silicon_carbide_ceramic",
+    "title": "Silicon Carbide (SiC) Ceramic",
+    "content": "Silicon carbide is an advanced ceramic with exceptional hardness, thermal conductivity, and chemical inertness. It maintains its strength at high temperatures and resists oxidation. SiC is used in demanding applications requiring wear resistance and thermal stability.",
+    "metadata": {
+      "classification": "advanced ceramic",
+      "composition": {
+        "silicon": 70,
+        "carbon": 30
+      },
+      "mechanical_properties": {
+        "density": 3200,
+        "elastic_modulus": 410000000000,
+        "flexural_strength": 400000000,
+        "compressive_strength": 3900000000,
+        "fracture_toughness": 4.6,
+        "hardness_vickers": 2800,
+        "poisson_ratio": 0.14
+      },
+      "thermal_properties": {
+        "thermal_conductivity": 120,
+        "thermal_expansion": 4.5e-6,
+        "specific_heat": 675,
+        "melting_point": 3003,
+        "max_service_temp": 1923
+      },
+      "applications": ["cutting tools", "semiconductor wafers", "armor", "heat exchangers"],
+      "manufacturing": ["hot pressing", "sintering", "CVD coating", "reaction bonding"]
+    },
+    "tags": ["ceramic", "hard", "high temperature", "wear resistant", "semiconductor"]
+  },
+  {
+    "id": "copper_c110",
+    "title": "Electrolytic Tough Pitch Copper (C110)",
+    "content": "C110 copper offers excellent electrical and thermal conductivity combined with good corrosion resistance and antimicrobial properties. It is easily formed, brazed, and soldered. This grade contains oxygen which provides good hot workability but limits hydrogen atmosphere applications.",
+    "metadata": {
+      "classification": "pure copper",
+      "composition": {
+        "copper": 99.9,
+        "oxygen": 0.04
+      },
+      "mechanical_properties": {
+        "density": 8960,
+        "elastic_modulus": 110000000000,
+        "yield_strength": 69000000,
+        "ultimate_strength": 220000000,
+        "elongation": 45,
+        "hardness_hb": 87,
+        "poisson_ratio": 0.34
+      },
+      "thermal_properties": {
+        "thermal_conductivity": 401,
+        "thermal_expansion": 1.65e-5,
+        "specific_heat": 385,
+        "melting_point": 1358
+      },
+      "electrical_properties": {
+        "electrical_conductivity": 101,
+        "resistivity": 1.71e-8
+      },
+      "applications": ["electrical wiring", "heat exchangers", "plumbing", "roofing"],
+      "manufacturing": ["rolling", "drawing", "extrusion", "casting"]
+    },
+    "tags": ["copper", "electrical conductor", "thermal conductor", "antimicrobial", "ductile"]
+  },
+  {
+    "id": "brass_c360",
+    "title": "Free-Cutting Brass (C360)",
+    "content": "C360 brass is a leaded brass alloy optimized for machining operations. The lead content improves machinability by acting as a chip breaker, allowing for high-speed machining with excellent surface finish. It offers good strength and corrosion resistance.",
+    "metadata": {
+      "classification": "brass alloy",
+      "composition": {
+        "copper": 61.5,
+        "zinc": 35.5,
+        "lead": 3.0
+      },
+      "mechanical_properties": {
+        "density": 8500,
+        "elastic_modulus": 101000000000,
+        "yield_strength": 124000000,
+        "ultimate_strength": 338000000,
+        "elongation": 53,
+        "hardness_hb": 64,
+        "poisson_ratio": 0.33
+      },
+      "thermal_properties": {
+        "thermal_conductivity": 115,
+        "thermal_expansion": 2.1e-5,
+        "specific_heat": 380,
+        "melting_point": 1188
+      },
+      "applications": ["machined parts", "fittings", "valves", "fasteners"],
+      "manufacturing": ["machining", "hot forging", "cold heading", "screw machine parts"]
+    },
+    "tags": ["brass", "machinable", "leaded", "corrosion resistant", "decorative"]
+  },
+  {
+    "id": "inconel_718",
+    "title": "Inconel 718 Superalloy",
+    "content": "Inconel 718 is a precipitation-hardened nickel-chromium superalloy designed for high-temperature service. It maintains excellent strength and corrosion resistance up to 700°C and exhibits good weldability. It is widely used in gas turbine engines and aerospace applications.",
+    "metadata": {
+      "classification": "nickel superalloy",
+      "composition": {
+        "nickel": 52.5,
+        "chromium": 19,
+        "iron": 18.5,
+        "niobium": 5.1,
+        "molybdenum": 3.0,
+        "titanium": 0.9,
+        "aluminum": 0.5
+      },
+      "mechanical_properties": {
+        "density": 8220,
+        "elastic_modulus": 200000000000,
+        "yield_strength": 1240000000,
+        "ultimate_strength": 1380000000,
+        "elongation": 12,
+        "hardness_hrc": 43,
+        "poisson_ratio": 0.29
+      },
+      "thermal_properties": {
+        "thermal_conductivity": 11.4,
+        "thermal_expansion": 1.3e-5,
+        "specific_heat": 435,
+        "melting_point": 1609,
+        "max_service_temp": 973
+      },
+      "applications": ["gas turbines", "rocket engines", "nuclear reactors", "oil drilling"],
+      "manufacturing": ["forging", "casting", "powder metallurgy", "additive manufacturing"]
+    },
+    "tags": ["superalloy", "high temperature", "nickel base", "precipitation hardened", "aerospace"]
+  }
+]

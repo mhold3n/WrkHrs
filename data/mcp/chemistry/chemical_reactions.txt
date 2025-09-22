@@ -1,0 +1,171 @@
+CHEMICAL REACTIONS DATABASE
+===========================
+
+COMBUSTION REACTIONS
+-------------------
+
+Methane Combustion:
+CH4 + 2O2 → CO2 + 2H2O
+ΔH = -890.3 kJ/mol
+Complete combustion of methane produces carbon dioxide and water. This is the primary reaction in natural gas combustion for heating and power generation.
+
+Ethanol Combustion:
+C2H5OH + 3O2 → 2CO2 + 3H2O
+ΔH = -1367 kJ/mol
+Ethanol burns cleanly and is used as a biofuel. The reaction is exothermic and produces only carbon dioxide and water as products.
+
+Propane Combustion:
+C3H8 + 5O2 → 3CO2 + 4H2O
+ΔH = -2220 kJ/mol
+Propane is commonly used in grills and heating applications. Complete combustion requires sufficient oxygen supply.
+
+ACID-BASE REACTIONS
+------------------
+
+Neutralization of Hydrochloric Acid:
+HCl + NaOH → NaCl + H2O
+Strong acid + strong base reaction. Products are a salt (sodium chloride) and water. The reaction is highly exothermic.
+
+Acetic Acid with Sodium Bicarbonate:
+CH3COOH + NaHCO3 → CH3COONa + H2O + CO2
+This reaction produces carbon dioxide gas, making it useful in baking (baking soda + vinegar). The gas production causes bubbling.
+
+Ammonia with Hydrochloric Acid:
+NH3 + HCl → NH4Cl
+Formation of ammonium chloride salt. This reaction occurs readily in air when ammonia and HCl vapors meet, producing white smoke.
+
+PRECIPITATION REACTIONS
+----------------------
+
+Silver Nitrate with Sodium Chloride:
+AgNO3 + NaCl → AgCl(s) + NaNO3
+Silver chloride precipitates as a white solid. This reaction is used in qualitative analysis to test for chloride ions.
+
+Barium Chloride with Sodium Sulfate:
+BaCl2 + Na2SO4 → BaSO4(s) + 2NaCl
+Barium sulfate forms a white precipitate that is insoluble in water. Used in medical imaging as a contrast agent.
+
+Lead Nitrate with Potassium Iodide:
+Pb(NO3)2 + 2KI → PbI2(s) + 2KNO3
+Lead iodide precipitates as a bright yellow solid. This is a classic precipitation reaction demonstration.
+
+REDOX REACTIONS
+--------------
+
+Zinc with Hydrochloric Acid:
+Zn + 2HCl → ZnCl2 + H2
+Zinc is oxidized and hydrogen is reduced. This reaction produces hydrogen gas and is used in some battery systems.
+
+Iron with Copper Sulfate:
+Fe + CuSO4 → FeSO4 + Cu
+Iron displaces copper from solution. The iron is oxidized and copper is reduced, depositing metallic copper.
+
+Hydrogen Peroxide Decomposition:
+2H2O2 → 2H2O + O2
+Catalyzed by manganese dioxide or catalase enzyme. This reaction is used in rocket propulsion and biological systems.
+
+SYNTHESIS REACTIONS
+------------------
+
+Haber Process (Ammonia Synthesis):
+N2 + 3H2 ⇌ 2NH3
+ΔH = -92 kJ/mol
+Catalyzed by iron at high temperature and pressure. This is the primary industrial method for ammonia production.
+
+Water Formation:
+2H2 + O2 → 2H2O
+ΔH = -571.6 kJ/mol
+Highly exothermic reaction. Used in fuel cells to generate electricity with water as the only byproduct.
+
+Sodium Chloride Formation:
+2Na + Cl2 → 2NaCl
+ΔH = -822 kJ/mol
+Direct combination of elements. The reaction is violent and highly exothermic, producing bright yellow light.
+
+DECOMPOSITION REACTIONS
+----------------------
+
+Calcium Carbonate Decomposition:
+CaCO3 → CaO + CO2
+ΔH = +178 kJ/mol
+Endothermic reaction used in limestone calcination to produce quicklime (calcium oxide).
+
+Hydrogen Peroxide Decomposition:
+2H2O2 → 2H2O + O2
+Can be catalyzed by various catalysts including MnO2, KI, or biological catalase.
+
+Electrolysis of Water:
+2H2O → 2H2 + O2
+Requires electrical energy input. Used for producing hydrogen gas for fuel or industrial applications.
+
+REACTION KINETICS NOTES
+======================
+
+Temperature Effects:
+- Reaction rates typically double for every 10°C temperature increase
+- Arrhenius equation: k = A·e^(-Ea/RT)
+- Higher temperatures increase molecular kinetic energy and collision frequency
+
+Catalysts:
+- Lower activation energy without being consumed
+- Provide alternative reaction pathways
+- Examples: enzymes (biological), transition metals (industrial)
+
+Concentration Effects:
+- Higher concentrations generally increase reaction rates
+- Rate laws express mathematical relationship between concentration and rate
+- Order of reaction determined experimentally
+
+THERMODYNAMICS NOTES
+====================
+
+Enthalpy (ΔH):
+- Negative values indicate exothermic reactions (heat released)
+- Positive values indicate endothermic reactions (heat absorbed)
+- Standard conditions: 25°C, 1 atm pressure
+
+Entropy (ΔS):
+- Measure of disorder in the system
+- Reactions tend toward increased entropy
+- Gas formation typically increases entropy
+
+Gibbs Free Energy (ΔG):
+- ΔG = ΔH - TΔS
+- Negative ΔG indicates spontaneous reaction
+- ΔG = 0 at equilibrium
+
+SAFETY CONSIDERATIONS
+====================
+
+Exothermic Reactions:
+- Can cause rapid temperature increases
+- May lead to pressure buildup in closed systems
+- Proper heat dissipation required
+
+Gas-Producing Reactions:
+- Ensure adequate ventilation
+- Avoid closed systems unless designed for pressure
+- Monitor for toxic gas production
+
+Corrosive Substances:
+- Use appropriate materials for containers and equipment
+- Ensure proper personal protective equipment
+- Have neutralizing agents available
+
+INDUSTRIAL APPLICATIONS
+======================
+
+Petrochemical Industry:
+- Cracking reactions to break down large hydrocarbons
+- Reforming reactions to produce gasoline
+- Polymerization reactions to produce plastics
+
+Metallurgy:
+- Reduction reactions to extract metals from ores
+- Oxidation reactions in corrosion processes
+- Alloy formation reactions
+
+Pharmaceutical Industry:
+- Synthesis reactions to produce active ingredients
+- Purification through crystallization and precipitation
+- Stereochemical considerations for drug efficacy

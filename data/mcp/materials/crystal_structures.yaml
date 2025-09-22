@@ -1,0 +1,305 @@
+crystal_systems:
+  cubic:
+    description: "Three equal axes at 90° angles"
+    parameters: "a = b = c, α = β = γ = 90°"
+    variants:
+      simple_cubic:
+        coordination_number: 6
+        atomic_packing_factor: 0.52
+        examples: ["Polonium"]
+      
+      body_centered_cubic:
+        coordination_number: 8
+        atomic_packing_factor: 0.68
+        lattice_points_per_unit_cell: 2
+        examples: ["Iron (α-Fe)", "Chromium", "Tungsten", "Vanadium"]
+        
+      face_centered_cubic:
+        coordination_number: 12
+        atomic_packing_factor: 0.74
+        lattice_points_per_unit_cell: 4
+        examples: ["Aluminum", "Copper", "Gold", "Silver", "Nickel", "Iron (γ-Fe)"]
+
+  hexagonal:
+    description: "Two equal axes at 120°, third axis perpendicular"
+    parameters: "a = b ≠ c, α = β = 90°, γ = 120°"
+    variants:
+      hexagonal_close_packed:
+        coordination_number: 12
+        atomic_packing_factor: 0.74
+        c_a_ratio: 1.633  # ideal ratio
+        examples: ["Zinc", "Magnesium", "Titanium", "Cobalt"]
+
+  tetragonal:
+    description: "Three perpendicular axes, two equal"
+    parameters: "a = b ≠ c, α = β = γ = 90°"
+    examples: ["Tin (β-Sn)", "Indium", "TiO2 (rutile)"]
+
+  orthorhombic:
+    description: "Three unequal perpendicular axes"
+    parameters: "a ≠ b ≠ c, α = β = γ = 90°"
+    examples: ["Sulfur", "Iodine", "Uranium"]
+
+  rhombohedral:
+    description: "Three equal axes, equal angles not 90°"
+    parameters: "a = b = c, α = β = γ ≠ 90°"
+    examples: ["Calcite", "Quartz", "Bismuth"]
+
+  monoclinic:
+    description: "Three unequal axes, two angles 90°"
+    parameters: "a ≠ b ≠ c, α = γ = 90°, β ≠ 90°"
+    examples: ["Gypsum", "Mica", "β-Sulfur"]
+
+  triclinic:
+    description: "Three unequal axes, no angles 90°"
+    parameters: "a ≠ b ≠ c, α ≠ β ≠ γ ≠ 90°"
+    examples: ["Plagioclase feldspar", "Turquoise"]
+
+common_metals:
+  iron:
+    room_temperature_phase: "α-Fe (BCC)"
+    phase_transitions:
+      - temperature: 912  # °C
+        from_phase: "α-Fe (BCC)"
+        to_phase: "γ-Fe (FCC)"
+        transformation: "magnetic transition at 768°C"
+      - temperature: 1394  # °C
+        from_phase: "γ-Fe (FCC)"
+        to_phase: "δ-Fe (BCC)"
+      - temperature: 1538  # °C
+        phase: "liquid"
+    
+    lattice_parameters:
+      alpha_fe:
+        structure: "BCC"
+        lattice_parameter: 2.866  # Angstroms
+        density: 7.87  # g/cm³
+      gamma_fe:
+        structure: "FCC"
+        lattice_parameter: 3.65   # Angstroms at 912°C
+        density: 8.0   # g/cm³
+
+  aluminum:
+    structure: "FCC"
+    lattice_parameter: 4.05  # Angstroms
+    density: 2.70  # g/cm³
+    melting_point: 660  # °C
+    crystal_defects:
+      stacking_fault_energy: 200  # mJ/m²
+      slip_systems: "{111}<110>"
+      slip_planes: 4
+      slip_directions_per_plane: 3
+
+  copper:
+    structure: "FCC"
+    lattice_parameter: 3.61  # Angstroms
+    density: 8.96  # g/cm³
+    melting_point: 1085  # °C
+    crystal_defects:
+      stacking_fault_energy: 45  # mJ/m²
+      slip_systems: "{111}<110>"
+      twin_formation: "easy due to low stacking fault energy"
+
+  titanium:
+    room_temperature_phase: "α-Ti (HCP)"
+    phase_transitions:
+      - temperature: 882  # °C
+        from_phase: "α-Ti (HCP)"
+        to_phase: "β-Ti (BCC)"
+        transformation_type: "allotropic"
+    
+    lattice_parameters:
+      alpha_ti:
+        structure: "HCP"
+        a_parameter: 2.95  # Angstroms
+        c_parameter: 4.68  # Angstroms
+        c_a_ratio: 1.587
+      beta_ti:
+        structure: "BCC"
+        lattice_parameter: 3.32  # Angstroms
+
+defects_and_imperfections:
+  point_defects:
+    vacancy:
+      description: "Missing atom from normal lattice site"
+      formation_energy: "0.5-2.0 eV typical"
+      effects: ["increased diffusion", "decreased density", "increased electrical resistivity"]
+    
+    interstitial:
+      description: "Extra atom in non-lattice site"
+      formation_energy: "3-5 eV typical"
+      effects: ["lattice distortion", "hardening", "decreased ductility"]
+    
+    substitutional:
+      description: "Foreign atom replacing host atom"
+      size_factor: "±15% size difference for solubility"
+      effects: ["solid solution strengthening", "changed properties"]
+
+  line_defects:
+    edge_dislocation:
+      description: "Extra half-plane of atoms"
+      burger_vector: "perpendicular to dislocation line"
+      stress_field: "compressive above, tensile below"
+    
+    screw_dislocation:
+      description: "Helical arrangement around dislocation line"
+      burger_vector: "parallel to dislocation line"
+      stress_field: "pure shear"
+    
+    mixed_dislocation:
+      description: "Combination of edge and screw character"
+      burger_vector: "at angle to dislocation line"
+
+  planar_defects:
+    grain_boundaries:
+      description: "Interface between differently oriented grains"
+      types: ["low-angle (<10°)", "high-angle (>10°)"]
+      energy: "0.1-1.0 J/m² typical"
+      effects: ["strengthening", "corrosion initiation", "diffusion paths"]
+    
+    twin_boundaries:
+      description: "Mirror image crystal across boundary"
+      types: ["annealing twins", "deformation twins"]
+      energy: "lower than grain boundaries"
+    
+    stacking_faults:
+      description: "Error in stacking sequence"
+      energy: "10-200 mJ/m² depending on material"
+      formation: "partial dislocation separation"
+
+phase_diagrams:
+  iron_carbon:
+    description: "Foundation of steel and cast iron metallurgy"
+    key_compositions:
+      pure_iron: 0.0
+      eutectoid_steel: 0.77  # wt% C
+      hypereutectoid_steel: "> 0.77% C"
+      hypoeutectoid_steel: "< 0.77% C"
+      cast_iron: "> 2.0% C"
+    
+    key_temperatures:
+      eutectoid: 727  # °C
+      eutectic: 1148  # °C
+      iron_melting: 1538  # °C
+    
+    phases:
+      ferrite:
+        description: "α-Fe, BCC iron"
+        carbon_solubility: "0.022% at 727°C"
+        properties: ["soft", "ductile", "magnetic"]
+      
+      austenite:
+        description: "γ-Fe, FCC iron"
+        carbon_solubility: "2.14% at 1148°C"
+        properties: ["non-magnetic", "high temperature stable"]
+      
+      cementite:
+        description: "Fe3C, iron carbide"
+        carbon_content: "6.67% C"
+        properties: ["hard", "brittle", "metastable"]
+      
+      pearlite:
+        description: "Eutectoid mixture of ferrite and cementite"
+        microstructure: "lamellar"
+        formation_temperature: 727  # °C
+
+  copper_zinc:
+    description: "Brass alloy system"
+    phases:
+      alpha_brass:
+        structure: "FCC (Cu-rich)"
+        zinc_range: "0-39% Zn"
+        properties: ["ductile", "single phase"]
+      
+      beta_brass:
+        structure: "BCC (ordered)"
+        zinc_range: "39-46% Zn"
+        properties: ["stronger", "less ductile"]
+      
+      gamma_brass:
+        zinc_range: "46-50% Zn"
+        properties: ["brittle", "complex structure"]
+
+heat_treatment:
+  steel_heat_treatments:
+    annealing:
+      purpose: "soften, relieve stress, refine grain"
+      process: "heat above A3, slow cool"
+      result: "pearlite + ferrite microstructure"
+    
+    normalizing:
+      purpose: "refine grain structure"
+      process: "heat above A3, air cool"
+      result: "finer pearlite than annealing"
+    
+    hardening:
+      purpose: "maximize hardness"
+      process: "austenitize, rapid cool (quench)"
+      result: "martensite formation"
+      cooling_media: ["water", "oil", "air", "salt brine"]
+    
+    tempering:
+      purpose: "reduce brittleness, adjust hardness"
+      process: "reheat hardened steel below A1"
+      temperature_effects:
+        150-250: "slight hardness reduction"
+        400-500: "good strength-toughness balance"
+        600-700: "maximum toughness"
+
+  aluminum_heat_treatments:
+    solution_treatment:
+      purpose: "dissolve strengthening phases"
+      process: "heat to 500-530°C, rapid cool"
+      
+    aging:
+      natural_aging:
+        temperature: "room temperature"
+        time: "several days"
+        designation: "T4"
+      
+      artificial_aging:
+        temperature: "150-200°C"
+        time: "several hours"
+        designation: "T6"
+        result: "peak strength"
+
+strengthening_mechanisms:
+  grain_refinement:
+    relationship: "σy = σ0 + kd^(-1/2)"  # Hall-Petch equation
+    effect: "smaller grains increase yield strength"
+    methods: ["controlled rolling", "rapid cooling", "grain refiners"]
+  
+  solid_solution:
+    mechanism: "atomic size and modulus mismatch"
+    types: ["substitutional", "interstitial"]
+    examples: ["C in Fe", "Zn in Cu", "Al in Cu"]
+  
+  precipitation:
+    mechanism: "coherent precipitates impede dislocation motion"
+    sequence: "supersaturated → GP zones → intermediate → equilibrium"
+    examples: ["Al-Cu alloys", "Ni-based superalloys"]
+  
+  work_hardening:
+    mechanism: "dislocation density increase"
+    relationship: "σ = σ0 + αGb√ρ"
+    methods: ["cold rolling", "drawing", "forging"]
+
+material_selection:
+  criteria:
+    mechanical: ["strength", "stiffness", "toughness", "fatigue resistance"]
+    physical: ["density", "thermal properties", "electrical properties"]
+    chemical: ["corrosion resistance", "compatibility"]
+    manufacturing: ["formability", "machinability", "weldability"]
+    economic: ["material cost", "processing cost", "availability"]
+    environmental: ["recyclability", "toxicity", "sustainability"]
+
+  selection_indices:
+    minimum_weight_beam:
+      stiffness_limited: "E/ρ"
+      strength_limited: "σ/ρ"
+    
+    minimum_cost_pressure_vessel:
+      yield_limited: "σy/ρC"
+      fracture_limited: "KIC²/ρC"
+    
+    thermal_shock_resistance: "σf(1-ν)/αE"

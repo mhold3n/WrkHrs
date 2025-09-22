@@ -1,126 +1,206 @@
 version: "3.9"
 name: ai-stack
 networks:
-  llm_net: {}
+  llm_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+    driver_opts:
+      com.docker.network.bridge.name: ai-stack-bridge
 
 volumes:
-  qdrant_data: {}
-  rag_cache: {}
-  models: {}
-  plugins: {}
-  mcp_data: {}
-  logs: {}
-  gateway_state: {}
+  qdrant_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${QDRANT_DATA_PATH:-./data/qdrant}
+  rag_cache:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${RAG_CACHE_PATH:-./data/rag_cache}
+  models:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${MODELS_PATH:-./models}
+  plugins:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${PLUGINS_PATH:-./plugins}
+  mcp_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${MCP_DATA_PATH:-./data/mcp}
+  logs:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${LOGS_PATH:-./logs}
+  gateway_state:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${GATEWAY_STATE_PATH:-./data/gateway_state}
 
 services:
   gateway-api:
     build:
       context: ..
       dockerfile: docker/gateway/Dockerfile
-    env_file: [ ../.env ]
-    networks: [ llm_net ]
+    env_file: [ "../.env" ]
+    networks:
+      llm_net:
+        aliases:
+          - gateway
+          - api-gateway
     ports: [ "${GATEWAY_PORT}:8000" ]
-    depends_on: [ orchestrator ]
+    depends_on:
+      orchestrator:
+        condition: service_healthy
     volumes:
       - "gateway_state:/state"
       - "logs:/logs"
+    restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 10s
       timeout: 3s
       retries: 10
+      start_period: 30s
 
   orchestrator:
     build:
       context: ..
       dockerfile: docker/orchestrator/Dockerfile
-    env_file: [ ../.env ]
-    networks: [ llm_net ]
+    env_file: [ "../.env" ]
+    networks:
+      llm_net:
+        aliases:
+          - orchestrator-service
     ports: [ "${ORCH_PORT}:8000" ]
-    depends_on: [ tool-registry, rag-api, asr-api, llm-runner ]
+    depends_on:
+      tool-registry:
+        condition: service_healthy
+      rag-api:
+        condition: service_healthy
+      asr-api:
+        condition: service_healthy
+      llm-runner:
+        condition: service_healthy
     volumes:
       - "logs:/logs"
+    restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 10s
       timeout: 3s
       retries: 10
+      start_period: 30s
 
   tool-registry:
     build:
       context: ..
       dockerfile: docker/tool-registry/Dockerfile
-    env_file: [ ../.env ]
+    env_file: [ "../.env" ]
     networks: [ llm_net ]
     ports: [ "${TOOLS_PORT}:8000" ]
     volumes:
       - "plugins:/plugins:rw"
       - "logs:/logs"
+    restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 10s
       timeout: 3s
       retries: 10
+      start_period: 20s
 
   mcp:
     build:
       context: ..
       dockerfile: docker/mcp/Dockerfile
-    env_file: [ ../.env ]
+    env_file: [ "../.env" ]
     networks: [ llm_net ]
     ports: [ "${MCP_PORT}:8000" ]
     volumes:
       - "mcp_data:/data:rw"
       - "logs:/logs"
+    restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 10s
       timeout: 3s
       retries: 10
+      start_period: 20s
 
   qdrant:
     image: qdrant/qdrant:latest
-    networks: [ llm_net ]
+    networks:
+      llm_net:
+        aliases:
+          - vector-db
+          - qdrant-server
     ports: [ "${QDRANT_PORT}:6333" ]
     volumes:
       - "qdrant_data:/qdrant/storage"
+    restart: unless-stopped
+    environment:
+      - QDRANT__SERVICE__HTTP_PORT=6333
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://localhost:6333/ready"]
       interval: 10s
       timeout: 3s
       retries: 10
+      start_period: 15s
 
   rag-api:
     build:
       context: ..
       dockerfile: docker/rag/Dockerfile
-    env_file: [ ../.env ]
+    env_file: [ "../.env" ]
     networks: [ llm_net ]
     ports: [ "${RAG_PORT}:8000" ]
-    depends_on: [ qdrant ]
+    depends_on:
+      qdrant:
+        condition: service_healthy
     volumes:
       - "rag_cache:/cache"
       - "logs:/logs"
+    restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 10s
       timeout: 3s
       retries: 10
+      start_period: 30s
 
   asr-api:
     build:
       context: ..
       dockerfile: docker/asr/Dockerfile
-    env_file: [ ../.env ]
+    env_file: [ "../.env" ]
     networks: [ llm_net ]
     ports: [ "${ASR_PORT}:8000" ]
     volumes:
       - "logs:/logs"
+    restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
-      interval: 10s
-      timeout: 3s
-      retries: 10
+      interval: 15s
+      timeout: 5s
+      retries: 8
+      start_period: 60s
 
   # This is a placeholder - will be overridden in dev/prod
   llm-runner:
@@ -131,8 +211,11 @@ services:
       - "models:/models"
     environment:
       - OLLAMA_KEEP_ALIVE=24h
+      - OLLAMA_ORIGINS=*
+    restart: unless-stopped
     healthcheck:
       test: ["CMD", "sh", "-c", "(curl -sf http://localhost:11434/api/tags || curl -sf http://localhost:8000/health)"]
       interval: 15s
       timeout: 5s
       retries: 20
+      start_period: 60s
