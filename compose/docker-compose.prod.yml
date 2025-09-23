@@ -19,9 +19,13 @@ services:
       "python",
       "-m", "vllm.entrypoints.openai.api_server",
       "--model", "${VLLM_MODEL}",
-      "--trust-remote-code",
       "--host", "0.0.0.0",
-      "--port", "8000"
+      "--port", "8000",
+      "--max-model-len", "${VLLM_MAX_MODEL_LEN}",
+      "--tensor-parallel-size", "${VLLM_TENSOR_PARALLEL_SIZE}",
+      "--gpu-memory-utilization", "${VLLM_GPU_MEMORY_UTILIZATION}",
+      "--quantization", "${VLLM_QUANTIZATION}",
+      "${VLLM_EXTRA_ARGS}"
     ]
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
