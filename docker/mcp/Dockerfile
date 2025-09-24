@@ -20,7 +20,8 @@ RUN pip install --no-cache-dir \
     sympy \
     mendeleev \
     pubchempy \
-    rdkit-pypi
+    rdkit-pypi \
+    python-multipart
 
 # Copy application code
 COPY services/mcp/ ./

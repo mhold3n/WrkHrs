@@ -14,7 +14,9 @@ RUN pip install --no-cache-dir \
     pydantic[dotenv] \
     requests \
     numpy \
-    sentence-transformers
+    sentence-transformers \
+    PyJWT \
+    python-multipart
 
 # Copy application code
 COPY services/gateway/ ./

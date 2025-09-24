@@ -23,7 +23,8 @@ RUN pip install --no-cache-dir \
     numpy \
     rank-bm25 \
     nltk \
-    scikit-learn
+    scikit-learn \
+    python-multipart
 
 # Copy application code
 COPY services/rag/ ./

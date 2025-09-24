@@ -5,6 +5,10 @@ services:
     environment:
       - NVIDIA_VISIBLE_DEVICES=all
       - CUDA_VISIBLE_DEVICES=all
+      - VLLM_MODEL=${VLLM_MODEL}
+      - VLLM_GPU_MEMORY_UTILIZATION=${VLLM_GPU_MEMORY_UTILIZATION}
+      - VLLM_MAX_MODEL_LEN=${VLLM_MAX_MODEL_LEN}
+      - VLLM_LOGGING_LEVEL=INFO
     deploy:
       resources:
         reservations:
@@ -15,14 +19,7 @@ services:
     volumes:
       - "models:/models"
     restart: unless-stopped
-    command: [
-      "python",
-      "-m", "vllm.entrypoints.openai.api_server",
-      "--model", "${VLLM_MODEL}",
-      "--trust-remote-code",
-      "--host", "0.0.0.0",
-      "--port", "8000"
-    ]
+    command: ["--model", "${VLLM_MODEL}", "--trust-remote-code", "--host", "0.0.0.0", "--port", "8000", "--tensor-parallel-size", "2", "--gpu-memory-utilization", "${VLLM_GPU_MEMORY_UTILIZATION}", "--max-model-len", "${VLLM_MAX_MODEL_LEN}", "--dtype", "auto"]
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 30s
@@ -32,7 +29,7 @@ services:
 
   asr-api:
     environment:
-      - ASR_MODEL=${ASR_MODEL}
+      - ASR_MODEL=${ASR_MODEL:-medium}
       - ASR_DEVICE=cuda
       - CUDA_VISIBLE_DEVICES=0
     deploy:

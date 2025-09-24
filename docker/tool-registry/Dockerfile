@@ -11,13 +11,12 @@ RUN apt-get update && apt-get install -y \
 RUN pip install --no-cache-dir \
     fastapi \
     uvicorn[standard] \
-    pluggy \
     pydantic \
     pyyaml \
     requests
 
 # Copy application code
-COPY services/tool_registry/ ./
+COPY services/tool_registry/app_simple.py ./app.py
 
 # Create plugins directory
 RUN mkdir -p /plugins
