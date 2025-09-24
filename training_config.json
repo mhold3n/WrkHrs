@@ -1,0 +1,29 @@
+{
+  "model_name": "gpt2",
+  "dataset_name": "custom_coding_dataset",
+  "max_length": 2048,
+  "batch_size": 1,
+  "gradient_accumulation_steps": 4,
+  "learning_rate": 0.0002,
+  "num_epochs": 1,
+  "warmup_steps": 100,
+  "save_steps": 500,
+  "eval_steps": 500,
+  "logging_steps": 100,
+  "output_dir": "./models/fine-tuned",
+  "use_lora": true,
+  "lora_rank": 16,
+  "lora_alpha": 32,
+  "lora_dropout": 0.1,
+  "mixed_precision": "fp16",
+  "gradient_checkpointing": false,
+  "dataloader_num_workers": 4,
+  "remove_unused_columns": false,
+  "dataset_size": 50,
+  "training_data_paths": [
+    "data/github_code/github_code.jsonl",
+    "data/humaneval/humaneval.jsonl",
+    "data/code_review/code_review.jsonl",
+    "data/documentation/documentation.jsonl"
+  ]
+}
